@@ -1,5 +1,6 @@
 package com.of.scraper.web;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,7 @@ public class DataController {
     DataService dataService;
     ScraperService scraperService;
 
-    @RequestMapping("/scrapeAndSave")
+    @GetMapping("/scrapeAndSave")
     public void scrapeAndSave() {
         Data data = scraperService.scrapeData();    
         dataService.saveData(data);
