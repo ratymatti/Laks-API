@@ -25,6 +25,8 @@ public class Data {
     )
     private UUID id;
 
+    private String location;
+
     private String date;
 
     private double weight;
