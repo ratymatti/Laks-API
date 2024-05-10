@@ -2,6 +2,7 @@ package com.of.scraper.service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -17,10 +18,16 @@ import org.springframework.stereotype.Service;
 
 import com.of.scraper.entity.Data;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class ScraperService {
 
-    public Data scrapeData() {
+    DataService dataService;
+
+    public List<Data> scrapeData() {
+        List<Data> dataList = new ArrayList<>();
         WebDriver driver = initializeWebDriver();
         navigateToPage(driver, "https://www.scanatura.no/fangstrapport/?type=0&lang=2");
 
@@ -44,10 +51,8 @@ public class ScraperService {
 
             if (yearValue <= currentYear) {
                 yearSelect.selectByValue(String.valueOf(yearValue));
-                sleep(5000);
 
                 clickButton(driver, "btn_detalj");
-                sleep(5000);
 
                 Select weekSelect = initializeSelect(driver, "Week");
                 List<WebElement> weekOptions = weekSelect.getOptions();
@@ -56,21 +61,33 @@ public class ScraperService {
                     // Re-find the select element and re-get the options
                     weekSelect = initializeSelect(driver, "Week");
                     weekOptions = weekSelect.getOptions();
-        
+
                     String value = weekOptions.get(j).getAttribute("value");
                     weekSelect.selectByValue(value);
                     sleep(5000);
-        
+
                     // Now the page should be loaded with the selected option
-                    String text = driver.findElement(By.id("DataGrid3")).getText();
-                    System.out.println(text);
+                    WebElement table = driver.findElement(By.id("DataGrid3"));
+
+                    List<WebElement> rows = table.findElements(By.tagName("tr"));
+
+                    for (int k = 1; k < rows.size(); k++) {
+                        WebElement row = rows.get(k);
+
+                        List<WebElement> cells = row.findElements(By.tagName("td"));
+
+                        Data data = createData(cells);
+
+                        Data savedData = dataService.saveData(data);
+                        dataList.add(savedData);
+                    }
                 }
             }
         }
         // Close the browser
         driver.quit();
 
-        return new Data();
+        return dataList;
     }
 
     private WebDriver initializeWebDriver() {
@@ -89,7 +106,9 @@ public class ScraperService {
     }
 
     private Select initializeSelect(WebDriver driver, String id) {
-        WebElement selectElement = driver.findElement(By.id(id));
+        Duration timeout = Duration.ofSeconds(10);
+        WebDriverWait wait = new WebDriverWait(driver, timeout); // wait up to 10 seconds
+        WebElement selectElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(id)));
         return new Select(selectElement);
     }
 
@@ -114,5 +133,41 @@ public class ScraperService {
             currentYear--;
         }
         return currentYear;
+    }
+
+    private Data createData(List<WebElement> cells) {
+        Data data = new Data();
+
+        String date = cells.get(0).getText();
+        if (date != null && !date.isEmpty()) {
+            data.setDate(date);
+        }
+
+        String input = cells.get(1).getText();
+        double weight = Double.parseDouble(input.replace(",", "."));
+        if (!Double.isNaN(weight)) {
+            data.setWeight(weight);
+        }
+
+        String species = cells.get(2).getText();
+        if (species != null && !species.isEmpty()) {
+            data.setSpecies(species);
+        }
+
+        String gear = cells.get(3).getText();
+        if (gear != null && !gear.isEmpty()) {
+            data.setGear(gear);
+        }
+
+        String zone = cells.get(4).getText();
+        if (zone != null && !zone.isEmpty()) {
+            data.setZone(zone);
+        }
+
+        String name = cells.get(5).getText();
+        if (name != null && !name.isEmpty()) {
+            data.setName(name);
+        }
+        return data;
     }
 }
