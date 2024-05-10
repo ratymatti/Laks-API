@@ -1,5 +1,7 @@
 package com.of.scraper.web;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +23,8 @@ public class DataController {
 
     @GetMapping("/scrapeAndSave")
     public void scrapeAndSave() {
-        Data data = scraperService.scrapeData();    
-        dataService.saveData(data);
+        List<Data> data = scraperService.scrapeData();    
+        
     }
     
 }
