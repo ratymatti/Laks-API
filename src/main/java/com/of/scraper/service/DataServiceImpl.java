@@ -1,5 +1,7 @@
 package com.of.scraper.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.of.scraper.entity.Data;
@@ -14,7 +16,7 @@ public class DataServiceImpl implements DataService {
     private DataRepository dataRepository;
 
     @Override
-    public Data saveData(Data data) {
-        return dataRepository.save(data);
+    public List<Data> saveAll(List<Data> dataList) {
+        return dataRepository.saveAll(dataList);
     }
 }

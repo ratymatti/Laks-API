@@ -1,7 +1,9 @@
 package com.of.scraper.service;
 
+import java.util.List;
+
 import com.of.scraper.entity.Data;
 
 public interface DataService {
-    Data saveData(Data data);
+    List<Data> saveAll(List<Data> dataList);
 }
