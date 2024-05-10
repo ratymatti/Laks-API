@@ -7,7 +7,6 @@ import org.hibernate.annotations.GenericGenerator;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Data {
 
     @Id
@@ -26,5 +24,17 @@ public class Data {
         strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID id;
+
+    private String date;
+
+    private double weight;
+
+    private String species;
+
+    private String gear;
+
+    private String zone;
+
+    private String name;
 
 }
