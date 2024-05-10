@@ -94,6 +94,9 @@ public class ScraperService {
                     // Get all the rows in the table
                     List<WebElement> rows = table.findElements(By.tagName("tr"));
 
+                    // Initialize a list to store the data for the week
+                    List<Data> weekData = new ArrayList<>();
+
                     // Iterate over the rows starting from the second row
                     // Ignore first row since its the header
                     for (int k = 1; k < rows.size(); k++) {
@@ -104,12 +107,14 @@ public class ScraperService {
                         List<WebElement> cells = row.findElements(By.tagName("td"));
 
                         // Create a Data object from the cells
+                        // and add it to the weekData list
                         Data data = createData(cells);
-
-                        // Save the data and add it to the list
-                        Data savedData = dataService.saveData(data);
-                        dataList.add(savedData);
+                        weekData.add(data);
                     }
+                    // Save the weekData list to the database
+                    // and add it to the dataList list
+                    dataService.saveAll(weekData);
+                    dataList.addAll(weekData);
                 }
             }
         }
@@ -171,36 +176,27 @@ public class ScraperService {
     private Data createData(List<WebElement> cells) {
         Data data = new Data();
 
+        data.setLocation("Beiarelva");
+
         String date = cells.get(0).getText();
-        if (date != null && !date.isEmpty()) {
-            data.setDate(date);
-        }
+        data.setDate((date != null && !date.isEmpty()) ? date : "N/A");
 
         String input = cells.get(1).getText();
         double weight = Double.parseDouble(input.replace(",", "."));
-        if (!Double.isNaN(weight)) {
-            data.setWeight(weight);
-        }
+        data.setWeight((!Double.isNaN(weight)) ? weight : 0.0);
 
         String species = cells.get(2).getText();
-        if (species != null && !species.isEmpty()) {
-            data.setSpecies(species);
-        }
+        data.setSpecies((species != null && !species.isEmpty()) ? species : "N/A");
 
         String gear = cells.get(3).getText();
-        if (gear != null && !gear.isEmpty()) {
-            data.setGear(gear);
-        }
+        data.setGear((gear != null && !gear.isEmpty()) ? gear : "N/A");
 
         String zone = cells.get(4).getText();
-        if (zone != null && !zone.isEmpty()) {
-            data.setZone(zone);
-        }
+        data.setZone((zone != null && !zone.isEmpty()) ? zone : "N/A");
 
         String name = cells.get(5).getText();
-        if (name != null && !name.isEmpty()) {
-            data.setName(name);
-        }
+        data.setName((name != null && !name.isEmpty()) ? name : "N/A");
+
         return data;
     }
 }
