@@ -19,4 +19,24 @@ public class DataServiceImpl implements DataService {
     public List<Data> saveAll(List<Data> dataList) {
         return dataRepository.saveAll(dataList);
     }
+
+    @Override
+    public List<Data> findByName(String name) {
+        return dataRepository.findByName(name);
+    }
+
+    @Override
+    public List<Data> findAll() {
+        return dataRepository.findAll();
+    }
+
+    @Override
+    public Data save(Data data) {
+        return dataRepository.save(data);
+    }
+
+    @Override
+    public void deleteAll() {
+        dataRepository.deleteAllInBatch();
+    }
 }
