@@ -40,7 +40,6 @@ public class ScraperService {
         Select select = initializeSelect(driver, "ELV");
         select.selectByValue("1714");
 
-        // Wait for the page to load
         sleep(5000);
 
         // Get the current year
@@ -84,12 +83,13 @@ public class ScraperService {
                     // Select the week value
                     weekSelect.selectByValue(value);
 
-                    // Wait for the page to load
                     sleep(5000);
 
                     // Now the page should be loaded with the selected option
                     // Find the "DataGrid3" table
-                    WebElement table = driver.findElement(By.id("DataGrid3"));
+                    Duration timeout = Duration.ofSeconds(10);
+                    WebDriverWait wait = new WebDriverWait(driver, timeout); // wait up to 10 seconds
+                    WebElement table = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("DataGrid3")));
 
                     // Get all the rows in the table
                     List<WebElement> rows = table.findElements(By.tagName("tr"));
@@ -167,7 +167,7 @@ public class ScraperService {
         int currentYear = LocalDate.now().getYear();
         if (LocalDate.now().getMonthValue() < 11) {
             // If the current month is before November, consider the previous year.
-            // Data at the webpage is usually for the previous year. 
+            // Data at the webpage is usually for the previous year.
             currentYear--;
         }
         return currentYear;
