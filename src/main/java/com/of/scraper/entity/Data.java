@@ -1,5 +1,6 @@
 package com.of.scraper.entity;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -49,4 +50,6 @@ public class Data {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "local_date")
+    private LocalDate localDate;
 }
