@@ -56,7 +56,7 @@ public class DataServiceImpl implements DataService {
      * @return the angler stats
      */
 
-    private AnglerStatsDTO createAnglerStatsDTO(String name, String species) {
+    protected AnglerStatsDTO createAnglerStatsDTO(String name, String species) {
         int count = dataRepository.getCountByNameAndSpecies(name, species);
         double totalWeight = dataRepository.getTotalWeightByNameAndSpecies(name, species);
         double averageWeight = (count > 0) ? totalWeight / count : 0;
