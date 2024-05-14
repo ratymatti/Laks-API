@@ -18,9 +18,6 @@ import lombok.Setter;
 public class AnglerDTO {
 
     private String name;
-    private int count;
-    private double totalWeight;
-    private double averageWeight;
-
+    private AnglerStatsDTO anglerStats;
     private List<Data> data;
 }
