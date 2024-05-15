@@ -26,54 +26,36 @@ public class DataServiceImplTest {
     @Mock
     private DataRepository dataRepository;
 
+    @Mock
+    private DataProcessingService dataProcessingService;
+
     @InjectMocks
     private DataServiceImpl dataService;
 
     @Test
     public void testFindByNameAndSpecies() {
         // Arrange
-        String name = "John";
+        String expectedName = "John";
         String species = "Laks";
         Data mockData = new Data();
         List<Data> mockDataList = Arrays.asList(mockData);
+        AnglerStatsDTO mockAnglerStats = new AnglerStatsDTO();
+        mockAnglerStats.setName(expectedName);
 
+        when(dataProcessingService.createAnglerStatsDTO(anyString(), anyString())).thenReturn(mockAnglerStats);
         when(dataRepository.findByNameAndSpecies(anyString(), anyString())).thenReturn(mockDataList);
 
         // Act
-        AnglerDTO result = dataService.findByNameAndSpecies(name, species);
+        AnglerDTO result = dataService.findByNameAndSpecies(expectedName, species);
         AnglerStatsDTO anglerStats = result.getAnglerStats();
 
         // Assert
-        assertEquals(name, result.getName());
+        assertEquals(expectedName, result.getName());
         assertNotNull(result.getAnglerStats());
         assertEquals(mockDataList, result.getData());
-        assertEquals(name, anglerStats.getName());
+        assertEquals(expectedName, anglerStats.getName());
 
-        verify(dataRepository).findByNameAndSpecies(name, species);
+        verify(dataRepository).findByNameAndSpecies(expectedName, species);
     }
 
-    @Test
-    public void testCreateAnglerStatsDTO() {
-        // Arrange
-        String testName  = "Test Name";
-        String testSpecies = "Test Species";
-        int expectedCount = 2;
-        double expectedTotalWeight = 20.0;
-        double expectedAverageWeight = 10.0;
-
-        when(dataRepository.getCountByNameAndSpecies(testName, testSpecies)).thenReturn(expectedCount);
-        when(dataRepository.getTotalWeightByNameAndSpecies(testName, testSpecies)).thenReturn(expectedTotalWeight);
-       
-        // Act
-        AnglerStatsDTO result = dataService.createAnglerStatsDTO(testName, testSpecies);
-
-        // Assert
-        assertEquals(testName, result.getName());
-        assertEquals(expectedCount, result.getCount());
-        assertEquals(expectedTotalWeight, result.getTotalWeight());
-        assertEquals(expectedAverageWeight, result.getAverageWeight());
-
-        verify(dataRepository).getCountByNameAndSpecies(testName, testSpecies);
-        verify(dataRepository).getTotalWeightByNameAndSpecies(testName, testSpecies);
-    }
 }
