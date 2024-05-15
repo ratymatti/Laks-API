@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.of.scraper.dto.AnglerDTO;
@@ -58,8 +59,7 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public Map<Integer, List<SevenDayPeriod>> getBestWeeks(String species) {
-        List<Data> fishesBySpecies = dataRepository.findBySpecies(species);
-        fishesBySpecies.sort(Comparator.comparing(Data::getLocalDate));
+        List<Data> fishesBySpecies = dataRepository.findBySpecies(species, Sort.by("localDate"));
 
         Map<Integer, List<Data>> fishesByYear = groupFishesByYear(fishesBySpecies);
 
@@ -83,9 +83,11 @@ public class DataServiceImpl implements DataService {
             List<Data> fishes = entry.getValue();
 
             Map<LocalDate, List<Data>> fishesByDate = fishes.stream()
-                    .collect(Collectors.groupingBy(Data::getLocalDate));
+                .collect(Collectors.groupingBy(Data::getLocalDate));
 
-            List<SevenDayPeriod> periods = calculatePeriods(fishes, fishesByDate);
+            Map<LocalDate, Double> totalWeightsByDate = calculateTotalWeightsByDate(fishes);
+
+            List<SevenDayPeriod> periods = calculatePeriods(fishes, fishesByDate, totalWeightsByDate);
 
             periods.sort(Comparator.comparing(SevenDayPeriod::getCount).reversed());
             List<SevenDayPeriod> bestPeriods = periods.stream().limit(3).collect(Collectors.toList());
@@ -96,7 +98,12 @@ public class DataServiceImpl implements DataService {
         return bestWeeksByYear;
     }
 
-    private List<SevenDayPeriod> calculatePeriods(List<Data> fishes, Map<LocalDate, List<Data>> fishesByDate) {
+    private Map<LocalDate, Double> calculateTotalWeightsByDate(List<Data> fishes) {
+        return fishes.stream()
+                .collect(Collectors.groupingBy(Data::getLocalDate, Collectors.summingDouble(Data::getWeight)));
+    }
+
+    private List<SevenDayPeriod> calculatePeriods(List<Data> fishes, Map<LocalDate, List<Data>> fishesByDate, Map<LocalDate, Double> totalWeightsByDate) {
         List<SevenDayPeriod> periods = new ArrayList<>();
 
         LocalDate startDate = fishes.get(0).getLocalDate();
@@ -107,12 +114,11 @@ public class DataServiceImpl implements DataService {
 
             int count = 0;
             double totalWeight = 0.0;
-            for (LocalDate currentDate = date; !currentDate.isAfter(periodEndDate); currentDate = currentDate
-                    .plusDays(1)) {
+            for (LocalDate currentDate = date; !currentDate.isAfter(periodEndDate); currentDate = currentDate.plusDays(1)) {
                 if (fishesByDate.containsKey(currentDate)) {
                     List<Data> fishesOnDate = fishesByDate.get(currentDate);
                     count += fishesOnDate.size();
-                    totalWeight += fishesOnDate.stream().mapToDouble(Data::getWeight).sum();
+                    totalWeight += totalWeightsByDate.getOrDefault(currentDate, 0.0);
                 }
             }
             double averageWeight = (count > 0) ? totalWeight / count : 0.0;
