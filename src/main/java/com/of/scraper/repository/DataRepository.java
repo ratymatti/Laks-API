@@ -14,6 +14,7 @@ public interface DataRepository extends JpaRepository<Data, UUID>{
     List<Data> findAll();
     List<Data> findByName(String name);
     List<Data> findByNameAndSpecies(String name, String species);
+    List<Data> findBySpecies(String species);
 
     @Query("SELECT COUNT(d) FROM Data d WHERE d.name = :name AND d.species = :species")
     int getCountByNameAndSpecies(@Param("name") String name, @Param("species") String species);
