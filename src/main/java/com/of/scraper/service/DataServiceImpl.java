@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -60,47 +61,31 @@ public class DataServiceImpl implements DataService {
         List<Data> fishesBySpecies = dataRepository.findBySpecies(species);
         fishesBySpecies.sort(Comparator.comparing(Data::getLocalDate));
 
+        Map<Integer, List<Data>> fishesByYear = groupFishesByYear(fishesBySpecies);
+
+        return getBestWeeksByYear(fishesByYear);
+    }
+
+    private Map<Integer, List<Data>> groupFishesByYear(List<Data> fishes) {
         Map<Integer, List<Data>> fishesByYear = new HashMap<>();
-
-        for (Data fish : fishesBySpecies) {
+        for (Data fish : fishes) {
             int year = fish.getLocalDate().getYear();
-            if (!fishesByYear.containsKey(year)) {
-                fishesByYear.put(year, new ArrayList<>());
-            }
-            fishesByYear.get(year).add(fish);
+            fishesByYear.computeIfAbsent(year, k -> new ArrayList<>()).add(fish);
         }
-
-        Map<Integer, List<SevenDayPeriod>> bestWeeksByYear = getBestWeeksByYear(fishesByYear);
-        
-        return bestWeeksByYear;
+        return fishesByYear;
     }
 
     private Map<Integer, List<SevenDayPeriod>> getBestWeeksByYear(Map<Integer, List<Data>> fishesByYear) {
-        Map<Integer, List<SevenDayPeriod>> bestWeeksByYear = new HashMap<>();
+        Map<Integer, List<SevenDayPeriod>> bestWeeksByYear = new TreeMap<>();
 
         for (Map.Entry<Integer, List<Data>> entry : fishesByYear.entrySet()) {
             int year = entry.getKey();
             List<Data> fishes = entry.getValue();
 
             Map<LocalDate, List<Data>> fishesByDate = fishes.stream()
-                .collect(Collectors.groupingBy(Data::getLocalDate));
+                    .collect(Collectors.groupingBy(Data::getLocalDate));
 
-            List<SevenDayPeriod> periods = new ArrayList<>();
-
-            LocalDate startDate = fishes.get(0).getLocalDate();
-            LocalDate endDate = fishes.get(fishes.size() - 1).getLocalDate();
-
-            for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(7)) {
-                LocalDate periodEndDate = date.plusDays(6);
-
-                int count = 0;
-                for (LocalDate currentDate = date; !currentDate.isAfter(periodEndDate); currentDate = currentDate.plusDays(1)) {
-                    if (fishesByDate.containsKey(currentDate)) {
-                        count += fishesByDate.get(currentDate).size();
-                    }
-                }
-                periods.add(new SevenDayPeriod(date, periodEndDate, count, 0.0, 0.0));
-            }
+            List<SevenDayPeriod> periods = calculatePeriods(fishes, fishesByDate);
 
             periods.sort(Comparator.comparing(SevenDayPeriod::getCount).reversed());
             List<SevenDayPeriod> bestPeriods = periods.stream().limit(3).collect(Collectors.toList());
@@ -109,6 +94,32 @@ public class DataServiceImpl implements DataService {
         }
 
         return bestWeeksByYear;
+    }
+
+    private List<SevenDayPeriod> calculatePeriods(List<Data> fishes, Map<LocalDate, List<Data>> fishesByDate) {
+        List<SevenDayPeriod> periods = new ArrayList<>();
+
+        LocalDate startDate = fishes.get(0).getLocalDate();
+        LocalDate endDate = fishes.get(fishes.size() - 1).getLocalDate();
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(7)) {
+            LocalDate periodEndDate = date.plusDays(6);
+
+            int count = 0;
+            double totalWeight = 0.0;
+            for (LocalDate currentDate = date; !currentDate.isAfter(periodEndDate); currentDate = currentDate
+                    .plusDays(1)) {
+                if (fishesByDate.containsKey(currentDate)) {
+                    List<Data> fishesOnDate = fishesByDate.get(currentDate);
+                    count += fishesOnDate.size();
+                    totalWeight += fishesOnDate.stream().mapToDouble(Data::getWeight).sum();
+                }
+            }
+            double averageWeight = (count > 0) ? totalWeight / count : 0.0;
+            periods.add(new SevenDayPeriod(date, periodEndDate, count, totalWeight, averageWeight));
+        }
+
+        return periods;
     }
 
     /**
