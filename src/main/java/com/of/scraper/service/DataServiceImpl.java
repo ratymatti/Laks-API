@@ -101,4 +101,40 @@ public class DataServiceImpl implements DataService {
         return dataProcessingService.getBestWeeksAlltime(fishesBySpecies);
     }
 
+    /**
+     * This method returns three best weeks alltime for a given species and minimum
+     * weight.
+     * The best weeks are determined by the total count of fishes caught that weigh
+     * more than the specified weight.
+     * 
+     * @param species The species of fish to consider.
+     * @param weight  The minimum weight of fish to consider.
+     * @return A list of the three best weeks alltime in WeekDTO format.
+     */
+
+    @Override
+    public List<WeekDTO> getBestBigFishWeeksAlltime(String species, double weight) {
+        List<Data> bigFishData = dataRepository.findBySpeciesAndMinWeight(species, weight);
+        return dataProcessingService.getBestWeeksAlltime(bigFishData);
+    }
+
+    /**
+     * This method returns the best weeks yearly for a given species and minimum
+     * weight.
+     * The best weeks are determined by the total count of fishes caught that weigh
+     * more than the specified weight.
+     * The results are grouped by year.
+     * 
+     * @param species The species of fish to consider.
+     * @param weight  The minimum weight of fish to consider.
+     * @return A map where the keys are years and the values are lists of the best
+     *         weeks in WeekDTO format.
+     */
+
+    @Override
+    public Map<Integer, List<WeekDTO>> getBestBigFishWeeksYearly(String species, double weight) {
+        List<Data> bigFishData = dataRepository.findBySpeciesAndMinWeight(species, weight);
+        return dataProcessingService.getBestWeeksByYear(bigFishData);
+    }
+
 }

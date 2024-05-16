@@ -14,4 +14,6 @@ public interface DataService {
     AnglerDTO findByNameAndSpecies(String name, String species);
     Map<Integer, List<WeekDTO>> getBestWeeksYearly(String species);
     List<WeekDTO> getBestWeeksAlltime(String species);
+    List<WeekDTO> getBestBigFishWeeksAlltime(String species, double weight);
+    Map<Integer, List<WeekDTO>> getBestBigFishWeeksYearly(String species, double weight);
 }
