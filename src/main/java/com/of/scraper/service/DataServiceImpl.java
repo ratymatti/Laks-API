@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.of.scraper.dto.AnglerDTO;
 import com.of.scraper.dto.AnglerStatsDTO;
 import com.of.scraper.dto.SevenDayPeriod;
+import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.repository.DataRepository;
 
@@ -53,8 +54,7 @@ public class DataServiceImpl implements DataService {
 
     /**
      * This method returns the best weeks for a given species.
-     * The best weeks are determined by the number of fishes caught and their total
-     * weight.
+     * The best weeks are determined by the number of fishes caught.
      *
      * @param species The species of fish to consider.
      * @return A map where the keys are years and the values are lists of the best
@@ -68,6 +68,20 @@ public class DataServiceImpl implements DataService {
         Map<Integer, List<Data>> fishesByYear = dataProcessingService.groupFishesByYear(fishesBySpecies);
 
         return dataProcessingService.getBestWeeksByYear(fishesByYear);
+    }
+
+    /**
+     * This method returns three best weeks alltime for a given species.
+     * The best weeks are determined by the total count of fishes caught.
+     * 
+     * @param species The species of fish to consider.
+     * @return A list of the three best weeks alltime in WeekDTO format.
+     */
+
+    @Override
+    public List<WeekDTO> getBestWeeksAlltime(String species) {
+        List<Data> fishesBySpecies = dataRepository.findBySpecies(species, Sort.by("localDate"));
+        return dataProcessingService.getBestWeeksAlltime(fishesBySpecies);
     }
 
 }
