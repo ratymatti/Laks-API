@@ -21,15 +21,34 @@ public class DataServiceImpl implements DataService {
     private DataRepository dataRepository;
     private DataProcessingService dataProcessingService;
 
+    /**
+     * This method saves a list of fish data to the database.
+     * 
+     * @param dataList The list of fish data to save.
+     * @return The list of fish data that was saved.
+     */
+
     @Override
     public List<Data> saveAll(List<Data> dataList) {
         return dataRepository.saveAll(dataList);
     }
 
+    /**
+     * This method returns all fish data from the database.
+     * 
+     * @return A list of all fish data.
+     */
+
     @Override
     public List<Data> findAll() {
         return dataRepository.findAll();
     }
+
+    /**
+     * This method returns all fish data for a given angler.
+     * 
+     * @param name String - The name of the angler.
+     */
 
     @Override
     public List<Data> findByName(String name) {
@@ -37,7 +56,8 @@ public class DataServiceImpl implements DataService {
     }
 
     /**
-     * Finds the angler data by name and species.
+     * This method returns the angler data by name and species
+     * as AnglerDTO.
      *
      * @param name    the name of the angler
      * @param species the species of fish
