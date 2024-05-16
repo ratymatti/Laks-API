@@ -31,6 +31,12 @@ public class DataController {
         scraperService.scrapeData();
     }
 
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Data>> getAll() {
+        List<Data> data = dataService.findAll();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
     @GetMapping("/getByName/{name}")
     public ResponseEntity<List<Data>> getByName(@PathVariable String name) {
         List<Data> data = dataService.findByName(name);
@@ -52,6 +58,18 @@ public class DataController {
     @GetMapping("/getBestWeeksAlltime/{species}")
     public ResponseEntity<List<WeekDTO>> getBestWeeksAlltime(@PathVariable String species) {
         List<WeekDTO> data = dataService.getBestWeeksAlltime(species);
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/getBestBigFishWeeksAlltime/{species}/{weight}")
+    public ResponseEntity<List<WeekDTO>> getBestBigFishWeeksAlltime(@PathVariable String species, @PathVariable double weight) {
+        List<WeekDTO> data = dataService.getBestBigFishWeeksAlltime(species, weight);
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/getBestBigFishWeeksYearly/{species}/{weight}")
+    public ResponseEntity<Map<Integer, List<WeekDTO>>> getBestBigFishWeeksYearly(@PathVariable String species, @PathVariable double weight) {
+        Map<Integer, List<WeekDTO>> data = dataService.getBestBigFishWeeksYearly(species, weight);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }
