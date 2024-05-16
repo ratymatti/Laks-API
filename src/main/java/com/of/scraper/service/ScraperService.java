@@ -26,6 +26,19 @@ public class ScraperService {
 
     DataService dataService;
 
+    /**
+     * Scrapes data from scanatura.no catch reports page and stores it in a list
+     * of Data entities (each representing one fish that is submitted to page).
+     * 
+     * The function navigates to a webpage, selects specific options from dropdown
+     * menus,
+     * waits for the page to load, and then scrapes data from a table on the page.
+     * The scraped data is stored in a list and saved to a database.
+     * Currently hardcoded to scrape data for Beiarelva river.
+     * 
+     * @return A list of Data objects containing the scraped data.
+     */
+
     public List<Data> scrapeData() {
         // Initialize a list to store the scraped data
         List<Data> dataList = new ArrayList<>();
