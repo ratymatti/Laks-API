@@ -2,12 +2,12 @@ package com.of.scraper.service;
 
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.of.scraper.dto.AnglerDTO;
 import com.of.scraper.dto.AnglerStatsDTO;
-import com.of.scraper.dto.SevenDayPeriod;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.repository.DataRepository;
@@ -62,12 +62,9 @@ public class DataServiceImpl implements DataService {
      */
 
     @Override
-    public Map<Integer, List<SevenDayPeriod>> getBestWeeks(String species) {
+    public Map<Integer, List<WeekDTO>> getBestWeeksYearly(String species) {
         List<Data> fishesBySpecies = dataRepository.findBySpecies(species, Sort.by("localDate"));
-        
-        Map<Integer, List<Data>> fishesByYear = dataProcessingService.groupFishesByYear(fishesBySpecies);
-
-        return dataProcessingService.getBestWeeksByYear(fishesByYear);
+        return dataProcessingService.getBestWeeksByYear(fishesBySpecies);
     }
 
     /**

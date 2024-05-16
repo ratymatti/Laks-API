@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.of.scraper.dto.AnglerDTO;
-import com.of.scraper.dto.SevenDayPeriod;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.entity.Data;
 
@@ -13,6 +12,6 @@ public interface DataService {
     List<Data> findAll();
     List<Data> findByName(String name);
     AnglerDTO findByNameAndSpecies(String name, String species);
-    Map<Integer, List<SevenDayPeriod>> getBestWeeks(String species);
+    Map<Integer, List<WeekDTO>> getBestWeeksYearly(String species);
     List<WeekDTO> getBestWeeksAlltime(String species);
 }
