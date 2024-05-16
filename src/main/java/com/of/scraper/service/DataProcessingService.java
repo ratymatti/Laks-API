@@ -110,10 +110,7 @@ public class DataProcessingService {
 
         for (Data fish : fishData) {
             String dayAndMonth = formatDateToMMddString(fish.getLocalDate());
-            if (!fishDataByDayAndMonth.containsKey(dayAndMonth)) {
-                fishDataByDayAndMonth.put(dayAndMonth, new ArrayList<>());
-            }
-            fishDataByDayAndMonth.get(dayAndMonth).add(fish);
+            fishDataByDayAndMonth.computeIfAbsent(dayAndMonth, key -> new ArrayList<>()).add(fish);
         }
         return fishDataByDayAndMonth;
     }
@@ -131,10 +128,7 @@ public class DataProcessingService {
 
         for (Data fish : fishData) {
             int year = fish.getLocalDate().getYear();
-            if (!fishDataByYear.containsKey(year)) {
-                fishDataByYear.put(year, new ArrayList<>());
-            }
-            fishDataByYear.get(year).add(fish);
+            fishDataByYear.computeIfAbsent(year, key -> new ArrayList<>()).add(fish);
         }
         return fishDataByYear;
     }
