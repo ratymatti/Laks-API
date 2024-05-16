@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.of.scraper.dto.AnglerDTO;
 import com.of.scraper.dto.SevenDayPeriod;
+import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.service.DataService;
 import com.of.scraper.service.ScraperService;
@@ -46,6 +47,12 @@ public class DataController {
     @GetMapping("/getBestWeeks/{species}")
     public ResponseEntity<Map<Integer, List<SevenDayPeriod>>> getBestWeeks(@PathVariable String species) {
         Map<Integer, List<SevenDayPeriod>> data = dataService.getBestWeeks(species);
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/getBestWeeksAlltime/{species}")
+    public ResponseEntity<List<WeekDTO>> getBestWeeksAlltime(@PathVariable String species) {
+        List<WeekDTO> data = dataService.getBestWeeksAlltime(species);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }
