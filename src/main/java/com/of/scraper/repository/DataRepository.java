@@ -21,4 +21,7 @@ public interface DataRepository extends JpaRepository<Data, UUID>{
 
     @Query("SELECT SUM(d.weight) FROM Data d WHERE d.name = :name AND d.species = :species")
     Double getTotalWeightByNameAndSpecies(@Param("name") String name, @Param("species") String species);
+
+    @Query("SELECT d FROM Data d WHERE d.species = :species AND d.weight >= :weight ORDER BY d.localDate")
+    List<Data> findBySpeciesAndMinWeight(@Param("species") String species, @Param("weight") double weight);
 }
