@@ -42,6 +42,12 @@ import lombok.Setter;
 @Table(name = "data")
 public class Data {
 
+    public Data(String species, double weight, LocalDate localDate) {
+        this.species = species;
+        this.weight = weight;
+        this.localDate = localDate;
+    }
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
