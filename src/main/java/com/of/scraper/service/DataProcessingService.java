@@ -96,13 +96,22 @@ public class DataProcessingService {
     }
 
     /**
-     * Calculates and returns yearly fishing statistics.
+     * Calculates and returns yearly fishing statistics as a list of YearDTO
+     * objects.
      * 
-     * Groups fish data by year, transforms each year's data into a YearDTO, rounds
-     * the weights, and adds it to the result list.
+     * The method groups the fish data by year using the groupByYear method. For
+     * each year's data,
+     * it creates a YearDTO object using the transformToYearDTO method, which
+     * includes counts and
+     * total weights for each species of fish.
      * 
-     * @param fishData List of fish data.
-     * @return List of yearly fishing statistics.
+     * The weights in the YearDTO are then rounded to one decimal place using the
+     * roundYearDTOValues method.
+     * The rounded YearDTO is added to the result list.
+     * 
+     * @param fishData List of Data objects, each representing a single fish's data.
+     * @return List of YearDTO objects, each representing a year's aggregated fish
+     *         data.
      */
 
     public List<YearDTO> getStatistics(List<Data> fishData) {
