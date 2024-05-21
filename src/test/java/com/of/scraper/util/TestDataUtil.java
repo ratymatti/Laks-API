@@ -18,21 +18,21 @@ public class TestDataUtil {
     
     public static List<Data> createTestData() {
         List<Data> fishData = new ArrayList<>();
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 16)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 17)));
+        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
+        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 19)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 20)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 21)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 22)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 22)));
+        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 21)));
+        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 21)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 1)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 2)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 3)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 4)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 5)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 6)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 7)));
+        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 5)));
+        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 5)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 1)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 2)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 3)));
@@ -42,8 +42,8 @@ public class TestDataUtil {
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 3)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 4)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 5)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 6)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 7)));
+        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 5)));
+        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 5)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 1)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 2)));
         fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 3)));
