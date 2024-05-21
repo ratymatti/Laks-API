@@ -108,10 +108,19 @@ public class DataProcessingService {
     private Map<String, List<Data>> groupByDayAndMonth(List<Data> fishData) {
         Map<String, List<Data>> fishDataByDayAndMonth = new TreeMap<>();
 
+        LocalDate seasonStart = LocalDate.of(2022, 6, 15);
+        LocalDate seasonEnd = LocalDate.of(2022, 8, 31);
+
+        for (LocalDate date = seasonStart; !date.isAfter(seasonEnd); date = date.plusDays(1)) {
+            String dayAndMonth = formatDateToMMddString(date);
+            fishDataByDayAndMonth.put(dayAndMonth, new ArrayList<>());
+        }
+
         for (Data fish : fishData) {
             String dayAndMonth = formatDateToMMddString(fish.getLocalDate());
-            fishDataByDayAndMonth.computeIfAbsent(dayAndMonth, key -> new ArrayList<>()).add(fish);
+            fishDataByDayAndMonth.get(dayAndMonth).add(fish);
         }
+
         return fishDataByDayAndMonth;
     }
 
@@ -186,12 +195,16 @@ public class DataProcessingService {
      */
 
     private DayDTO transformToDayDTO(List<Data> fishData) {
-        String date = formatDateToMMddString(fishData.get(0).getLocalDate());
-        int count = fishData.size();
-        double totalWeight = fishData.stream().mapToDouble(Data::getWeight).sum();
-        double averageWeight = (count > 0) ? totalWeight / count : 0.0;
-
-        return new DayDTO(date, count, totalWeight, averageWeight);
+        if (fishData.size() > 0) {
+            String date = formatDateToMMddString(fishData.get(0).getLocalDate());
+            int count = fishData.size();
+            double totalWeight = fishData.stream().mapToDouble(Data::getWeight).sum();
+            double averageWeight = (count > 0) ? totalWeight / count : 0.0;
+    
+            return new DayDTO(date, count, totalWeight, averageWeight);
+        } else {
+            return new DayDTO();
+        }
     }
 
     /**
@@ -214,11 +227,6 @@ public class DataProcessingService {
 
         for (int i = 0; i < fishDataInDayDTOs.size(); i += 7) {
             int endIndex = Math.min(i + 7, fishDataInDayDTOs.size());
-
-            if (endIndex - i < 7) {
-                weeklyStats.add(new WeekDTO("ignored cause not full week", "_", 0, 0.0, 0.0));
-                break;
-            }
 
             List<DayDTO> weekData = fishDataInDayDTOs.subList(i, endIndex);
 
