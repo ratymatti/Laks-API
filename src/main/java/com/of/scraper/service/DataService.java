@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.of.scraper.dto.AnglerDTO;
 import com.of.scraper.dto.WeekDTO;
+import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 
 public interface DataService {
@@ -16,4 +17,5 @@ public interface DataService {
     List<WeekDTO> getBestWeeksAlltime(String species);
     List<WeekDTO> getBestBigFishWeeksAlltime(String species, double weight);
     Map<Integer, List<WeekDTO>> getBestBigFishWeeksYearly(String species, double weight);
+    List<YearDTO> getAnnualStatistics();
 }

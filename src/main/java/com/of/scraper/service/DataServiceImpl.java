@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.of.scraper.dto.AnglerDTO;
 import com.of.scraper.dto.AnglerStatsDTO;
 import com.of.scraper.dto.WeekDTO;
+import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.repository.DataRepository;
 
@@ -41,7 +42,7 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public List<Data> findAll() {
-        return dataRepository.findAll();
+        return dataRepository.findAll(Sort.by("localDate"));
     }
 
     /**
@@ -135,6 +136,12 @@ public class DataServiceImpl implements DataService {
     public Map<Integer, List<WeekDTO>> getBestBigFishWeeksYearly(String species, double weight) {
         List<Data> bigFishData = dataRepository.findBySpeciesAndMinWeight(species, weight);
         return dataProcessingService.getBestWeeksByYear(bigFishData);
+    }
+
+    @Override
+    public List<YearDTO> getAnnualStatistics() {
+        List<Data> fishes = dataRepository.findAll(Sort.by("localDate"));
+        return dataProcessingService.getStatistics(fishes);
     }
 
 }
