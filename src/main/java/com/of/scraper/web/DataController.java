@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.of.scraper.dto.AnglerDTO;
 import com.of.scraper.dto.WeekDTO;
+import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.service.DataService;
 import com.of.scraper.service.ScraperService;
@@ -70,6 +71,12 @@ public class DataController {
     @GetMapping("/getBestBigFishWeeksYearly/{species}/{weight}")
     public ResponseEntity<Map<Integer, List<WeekDTO>>> getBestBigFishWeeksYearly(@PathVariable String species, @PathVariable double weight) {
         Map<Integer, List<WeekDTO>> data = dataService.getBestBigFishWeeksYearly(species, weight);
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAnnualStatistics")
+    public ResponseEntity<List<YearDTO>> getAnnualStatistics() {
+        List<YearDTO> data = dataService.getAnnualStatistics();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }
