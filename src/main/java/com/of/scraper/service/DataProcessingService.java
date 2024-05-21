@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.of.scraper.dto.AnglerStatsDTO;
 import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.WeekDTO;
+import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.repository.DataRepository;
 
@@ -92,6 +93,30 @@ public class DataProcessingService {
         List<DayDTO> fishDataInDayDTOList = transformToDayDTOList(fishDataByDayAndMonth);
 
         return getBestWeeks(calculateWeeklyStats(fishDataInDayDTOList));
+    }
+
+    /**
+     * Calculates and returns yearly fishing statistics.
+     * 
+     * Groups fish data by year, transforms each year's data into a YearDTO, rounds
+     * the weights, and adds it to the result list.
+     * 
+     * @param fishData List of fish data.
+     * @return List of yearly fishing statistics.
+     */
+
+    public List<YearDTO> getStatistics(List<Data> fishData) {
+        Map<Integer, List<Data>> fishesByYear = groupByYear(fishData);
+
+        List<YearDTO> result = new ArrayList<>();
+
+        for (List<Data> year : fishesByYear.values()) {
+            YearDTO yearDTO = transformToYearDTO(year);
+
+            result.add(roundYearDTOValues(yearDTO));
+        }
+
+        return result;
     }
 
     /**
@@ -200,11 +225,42 @@ public class DataProcessingService {
             int count = fishData.size();
             double totalWeight = fishData.stream().mapToDouble(Data::getWeight).sum();
             double averageWeight = (count > 0) ? totalWeight / count : 0.0;
-    
+
             return new DayDTO(date, count, totalWeight, averageWeight);
         } else {
             return new DayDTO();
         }
+    }
+
+    /**
+     * Transforms a list of fish data into a YearDTO.
+     * 
+     * Counts and calculates total and average weights for "Laks" and "Sjøørret",
+     * and counts only total amount of "Pukkellaks".
+     * 
+     * @param fishes List of fish data for a specific year.
+     * @return YearDTO representing the aggregated fish data for that year.
+     */
+
+    private YearDTO transformToYearDTO(List<Data> fishes) {
+        YearDTO yearDTO = new YearDTO(fishes.get(0).getLocalDate().getYear());
+        for (Data fish : fishes) {
+            if (fish.getSpecies().equals("Laks")) {
+                yearDTO.setSalmonCount(yearDTO.getSalmonCount() + 1);
+                yearDTO.setSalmonTotalWeight(yearDTO.getSalmonTotalWeight() + fish.getWeight());
+            }
+            if (fish.getSpecies().equals("Sjøørret")) {
+                yearDTO.setSeatroutCount(yearDTO.getSeatroutCount() + 1);
+                yearDTO.setSeatroutTotalWeight(yearDTO.getSeatroutTotalWeight() + fish.getWeight());
+            }
+            if (fish.getSpecies().equals("Pukkellaks")) {
+                yearDTO.setPukkelaksCount(yearDTO.getPukkelaksCount() + 1);
+            }
+        }
+        yearDTO.setSalmonAverageWeight(yearDTO.getSalmonTotalWeight() / yearDTO.getSalmonCount());
+        yearDTO.setSeatroutAverageWeight(yearDTO.getSeatroutTotalWeight() / yearDTO.getSeatroutCount());
+
+        return yearDTO;
     }
 
     /**
@@ -233,7 +289,7 @@ public class DataProcessingService {
             int count = weekData.stream().mapToInt(DayDTO::getFishCount).sum();
             double totalWeight = weekData.stream().mapToDouble(DayDTO::getTotalWeight).sum();
             double averageWeight = (count > 0) ? totalWeight / count : 0.0;
-            double roundedAverageWeight = Math.round(averageWeight * 100.0) / 100.0;
+            double roundedAverageWeight = Math.round(averageWeight * 10.0) / 10.0;
 
             String startDate = weekData.get(0).getDate();
             String endDate = weekData.get(weekData.size() - 1).getDate();
@@ -265,5 +321,25 @@ public class DataProcessingService {
 
     private String formatDateToMMddString(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("MM.dd"));
+    }
+
+    /**
+     * Rounds the total and average weights of salmons and seatrouts in a YearDTO
+     * to one decimal place.
+     * 
+     * @param yearDTO The YearDTO to be rounded.
+     * @return The rounded YearDTO.
+     */
+
+    private YearDTO roundYearDTOValues(YearDTO yearDTO) {
+        double roundedSalmonTotalWeight = Math.round(yearDTO.getSalmonTotalWeight() * 10.0) / 10.0;
+        double roundedSalmonAverageWeight = Math.round(yearDTO.getSalmonAverageWeight() * 10.0) / 10.0;
+        double roundedSeatroutTotalWeight = Math.round(yearDTO.getSeatroutTotalWeight() * 10.0) / 10.0;
+        double roundedSeatroutAverageWeight = Math.round(yearDTO.getSeatroutAverageWeight() * 10.0) / 10.0;
+        yearDTO.setSalmonTotalWeight(roundedSalmonTotalWeight);
+        yearDTO.setSalmonAverageWeight(roundedSalmonAverageWeight);
+        yearDTO.setSeatroutTotalWeight(roundedSeatroutTotalWeight);
+        yearDTO.setSeatroutAverageWeight(roundedSeatroutAverageWeight);
+        return yearDTO;
     }
 }
