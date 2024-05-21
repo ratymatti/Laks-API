@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public interface DataRepository extends JpaRepository<Data, UUID>{
-    List<Data> findAll();
+    List<Data> findAll(Sort sort);
     List<Data> findByName(String name);
     List<Data> findByNameAndSpecies(String name, String species);
     List<Data> findBySpecies(String species, Sort sort);
