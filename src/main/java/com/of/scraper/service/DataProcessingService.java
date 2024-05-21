@@ -214,6 +214,12 @@ public class DataProcessingService {
 
         for (int i = 0; i < fishDataInDayDTOs.size(); i += 7) {
             int endIndex = Math.min(i + 7, fishDataInDayDTOs.size());
+
+            if (endIndex - i < 7) {
+                weeklyStats.add(new WeekDTO("ignored cause not full week", "_", 0, 0.0, 0.0));
+                break;
+            }
+
             List<DayDTO> weekData = fishDataInDayDTOs.subList(i, endIndex);
 
             int count = weekData.stream().mapToInt(DayDTO::getFishCount).sum();
