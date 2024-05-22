@@ -35,11 +35,18 @@ public class DataProcessingService {
      */
 
     public AnglerStatsDTO createAnglerStatsDTO(String name, String species) {
-        int count = dataRepository.getCountByNameAndSpecies(name, species);
-        double totalWeight = dataRepository.getTotalWeightByNameAndSpecies(name, species);
-        double averageWeight = (count > 0) ? totalWeight / count : 0;
+        int count = dataRepository
+                .getCountByNameAndSpecies(name, species);
+        double totalWeight = dataRepository
+                .getTotalWeightByNameAndSpecies(name, species);
+        double averageWeight = CalculationUtils
+                .calculateAverageWeight(count, totalWeight);
 
-        return new AnglerStatsDTO(name, count, totalWeight, averageWeight);
+        return new AnglerStatsDTO(
+                name,
+                count,
+                CalculationUtils.roundToTwoDecimals(totalWeight),
+                CalculationUtils.roundToTwoDecimals(averageWeight));
     }
 
     /**
@@ -53,18 +60,22 @@ public class DataProcessingService {
      */
 
     public Map<Integer, List<WeekDTO>> getBestWeeksByYear(List<Data> fishData) {
-        Map<Integer, List<Data>> fishDataByYear = GroupingUtils.groupByYear(FilteringUtils.filterOutOffSeasonFishes(fishData));
+        Map<Integer, List<Data>> fishDataByYear = GroupingUtils
+                .groupByYear(FilteringUtils.filterOutOffSeasonFishes(fishData));
 
         Map<Integer, List<WeekDTO>> bestWeeksByYear = new TreeMap<>();
 
         for (List<Data> fishesByYear : fishDataByYear.values()) {
-            Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils.groupByDayAndMonth(fishesByYear);
+            Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils
+                    .groupByDayAndMonth(fishesByYear);
 
-            List<DayDTO> fishDataInDayDTOList = TransformationUtils.transformToDayDTOList(fishDataByDayAndMonth);
+            List<DayDTO> fishDataInDayDTOList = TransformationUtils
+                    .transformToDayDTOList(fishDataByDayAndMonth);
 
             bestWeeksByYear.put(
                     fishesByYear.get(0).getLocalDate().getYear(),
-                    FilteringUtils.getBestWeeks(TransformationUtils.transformToWeekDTOList(fishDataInDayDTOList)));
+                    FilteringUtils
+                            .getBestWeeks(TransformationUtils.transformToWeekDTOList(fishDataInDayDTOList)));
         }
 
         return bestWeeksByYear;
@@ -80,11 +91,14 @@ public class DataProcessingService {
      */
 
     public List<WeekDTO> getBestWeeksAlltime(List<Data> fishData) {
-        Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils.groupByDayAndMonth(FilteringUtils.filterOutOffSeasonFishes(fishData));
+        Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils
+                .groupByDayAndMonth(FilteringUtils.filterOutOffSeasonFishes(fishData));
 
-        List<DayDTO> fishDataInDayDTOList = TransformationUtils.transformToDayDTOList(fishDataByDayAndMonth);
+        List<DayDTO> fishDataInDayDTOList = TransformationUtils
+                .transformToDayDTOList(fishDataByDayAndMonth);
 
-        return FilteringUtils.getBestWeeks(TransformationUtils.transformToWeekDTOList(fishDataInDayDTOList));
+        return FilteringUtils
+                .getBestWeeks(TransformationUtils.transformToWeekDTOList(fishDataInDayDTOList));
     }
 
     /**
