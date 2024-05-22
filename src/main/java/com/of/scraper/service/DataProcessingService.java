@@ -44,12 +44,11 @@ public class DataProcessingService {
 
     /**
      * This method calculates the best weeks for each year.
-     * The best weeks are determined by the number of fishes caught and their total
-     * weight.
+     * The best weeks are determined by the number of fishes caught.
      *
-     * @param fishesByYear A map where the keys are years and the values are lists
-     *                     of fishes caught in that year.
-     * @return A map where the keys are years and the values are lists of the best
+     * @param fishData A list of fishes to calculate the best weeks for.
+     * 
+     * @return A map where the keys are years and the values are lists of three best
      *         seven day periods for that year.
      */
 
@@ -74,13 +73,6 @@ public class DataProcessingService {
     /**
      * Calculates and returns the top three weeks with the highest fish count from
      * the provided fish data.
-     * 
-     * The method first filters out off-season fishes, then groups the remaining
-     * data by day and month.
-     * The daily data is transformed into DayDTOs, which are then aggregated into
-     * weekly statistics.
-     * Finally, the top three weeks with the highest fish count are determined and
-     * returned.
      * 
      * @param fishData List of Data objects, each representing a single fish's data.
      * @return List of the top three WeekDTOs, each representing a week's aggregated
@@ -224,7 +216,7 @@ public class DataProcessingService {
      * fishes
      * caught in a day.
      * 
-     * @param fishData List of Data objects, each representing a single fish's data.
+     * @param fishData List of Data objects from same date, each representing a single fish's data.
      * @return DayDTO representing the aggregated fishing data for the day.
      */
 
@@ -282,7 +274,7 @@ public class DataProcessingService {
      * which includes the start and end dates, fish count, total weight, and average
      * weight.
      * 
-     * @param fishDataInDayDTOs A list of DayDTOs, each representing a day's fish
+     * @param fishDataInDayDTOs A list of DayDTOs from same week, each representing a day's fish
      *                          data.
      * @return A list of WeekDTOs, each representing a week's aggregated fish data.
      */
@@ -337,18 +329,14 @@ public class DataProcessingService {
      * to one decimal place.
      * 
      * @param yearDTO The YearDTO to be rounded.
-     * @return The rounded YearDTO.
+     * @return The YearDTO with rounded values.
      */
 
     private YearDTO roundYearDTOValues(YearDTO yearDTO) {
-        double roundedSalmonTotalWeight = Math.round(yearDTO.getSalmonTotalWeight() * 10.0) / 10.0;
-        double roundedSalmonAverageWeight = Math.round(yearDTO.getSalmonAverageWeight() * 10.0) / 10.0;
-        double roundedSeatroutTotalWeight = Math.round(yearDTO.getSeatroutTotalWeight() * 10.0) / 10.0;
-        double roundedSeatroutAverageWeight = Math.round(yearDTO.getSeatroutAverageWeight() * 10.0) / 10.0;
-        yearDTO.setSalmonTotalWeight(roundedSalmonTotalWeight);
-        yearDTO.setSalmonAverageWeight(roundedSalmonAverageWeight);
-        yearDTO.setSeatroutTotalWeight(roundedSeatroutTotalWeight);
-        yearDTO.setSeatroutAverageWeight(roundedSeatroutAverageWeight);
+        yearDTO.setSalmonTotalWeight(Math.round(yearDTO.getSalmonTotalWeight() * 10.0) / 10.0);
+        yearDTO.setSalmonAverageWeight(Math.round(yearDTO.getSalmonAverageWeight() * 10.0) / 10.0);
+        yearDTO.setSeatroutTotalWeight(Math.round(yearDTO.getSeatroutTotalWeight() * 10.0) / 10.0);
+        yearDTO.setSeatroutAverageWeight(Math.round(yearDTO.getSeatroutAverageWeight() * 10.0) / 10.0);
         return yearDTO;
     }
 }
