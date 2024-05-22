@@ -287,18 +287,63 @@ public class DataProcessingService {
 
             List<DayDTO> weekData = fishDataInDayDTOs.subList(i, endIndex);
 
-            int count = weekData.stream().mapToInt(DayDTO::getFishCount).sum();
-            double totalWeight = weekData.stream().mapToDouble(DayDTO::getTotalWeight).sum();
-            double averageWeight = (count > 0) ? totalWeight / count : 0.0;
-            double roundedAverageWeight = Math.round(averageWeight * 10.0) / 10.0;
+            int count = calculateCount(weekData);
+            double totalWeight = calculateTotalWeight(weekData);
+            double averageWeight = roundToTwoDecimals(calculateAverageWeight(count, totalWeight));
 
             String startDate = weekData.get(0).getDate();
             String endDate = weekData.get(weekData.size() - 1).getDate();
 
-            weeklyStats.add(new WeekDTO(startDate, endDate, count, totalWeight, roundedAverageWeight));
+            weeklyStats.add(new WeekDTO(startDate, endDate, count, totalWeight, averageWeight));
         }
 
         return weeklyStats;
+    }
+
+    /**
+     * Rounds a double value to two decimal places.
+     * 
+     * @param value The value to be rounded.
+     * @return The rounded value as double.
+     */
+
+    public double roundToTwoDecimals(double value) {
+        final int NUM_OF_DECIMALS = 2;
+        return Math.round(value * Math.pow(10, NUM_OF_DECIMALS)) / Math.pow(10, NUM_OF_DECIMALS);
+    }
+
+    /**
+     * Calculates the average weight of fish caught in a week.
+     * 
+     * @param count The total fish count for the week.
+     * @param totalWeight The total weight of fish caught in the week.
+     * @return The average weight of fish caught in the week as double.
+     */
+
+    public double calculateAverageWeight(int count, double totalWeight) {
+        return (count > 0) ? totalWeight / count : 0.0;
+    }
+
+    /**
+     * Calculates the total weight of fish caught in a week.
+     * 
+     * @param weekData A list of DayDTOs from same week, each representing a day's fish data.
+     * @return The total weight of fish caught in the week as double.
+     */
+
+    private double calculateTotalWeight(List<DayDTO> weekData) {
+        return weekData.stream().mapToDouble(DayDTO::getTotalWeight).sum();
+    }
+
+    /**
+     * Calculates the total fish count for a week.
+     * 
+     * @param weekData A list of DayDTOs from same week, each representing a day's fish data.
+     * @return The total fish count for the week as int.
+     */
+
+    private int calculateCount(List<DayDTO> weekData) {
+        return weekData.stream().mapToInt(DayDTO::getFishCount).sum();
     }
 
     /**
@@ -333,10 +378,10 @@ public class DataProcessingService {
      */
 
     private YearDTO roundYearDTOValues(YearDTO yearDTO) {
-        yearDTO.setSalmonTotalWeight(Math.round(yearDTO.getSalmonTotalWeight() * 10.0) / 10.0);
-        yearDTO.setSalmonAverageWeight(Math.round(yearDTO.getSalmonAverageWeight() * 10.0) / 10.0);
-        yearDTO.setSeatroutTotalWeight(Math.round(yearDTO.getSeatroutTotalWeight() * 10.0) / 10.0);
-        yearDTO.setSeatroutAverageWeight(Math.round(yearDTO.getSeatroutAverageWeight() * 10.0) / 10.0);
+        yearDTO.setSalmonTotalWeight(roundToTwoDecimals(yearDTO.getSalmonTotalWeight()));
+        yearDTO.setSalmonAverageWeight(roundToTwoDecimals(yearDTO.getSalmonAverageWeight()));
+        yearDTO.setSeatroutTotalWeight(roundToTwoDecimals(yearDTO.getSeatroutTotalWeight()));
+        yearDTO.setSeatroutAverageWeight(roundToTwoDecimals(yearDTO.getSeatroutAverageWeight()));
         return yearDTO;
     }
 }
