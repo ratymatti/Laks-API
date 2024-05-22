@@ -39,7 +39,7 @@ public class YearDTO {
     private int seatroutCount = 0;
     private double seatroutTotalWeight = 0;
     private double seatroutAverageWeight = 0;
-    private int pukkelaksCount = 0;
+    private int pukkellaksCount = 0;
 
     public YearDTO(int year) {
         this.year = year;

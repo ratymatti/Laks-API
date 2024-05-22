@@ -35,7 +35,7 @@ public class TransformationUtils {
                 yearDTO.setSeatroutTotalWeight(yearDTO.getSeatroutTotalWeight() + fish.getWeight());
             }
             if (fish.getSpecies().equals("Pukkellaks")) {
-                yearDTO.setPukkelaksCount(yearDTO.getPukkelaksCount() + 1);
+                yearDTO.setPukkellaksCount(yearDTO.getPukkellaksCount() + 1);
             }
         }
         yearDTO.setSalmonAverageWeight(yearDTO.getSalmonTotalWeight() / yearDTO.getSalmonCount());
