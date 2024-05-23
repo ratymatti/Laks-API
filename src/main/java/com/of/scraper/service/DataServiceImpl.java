@@ -23,6 +23,8 @@ public class DataServiceImpl implements DataService {
     private DataRepository dataRepository;
     private DataProcessingService dataProcessingService;
 
+    private final String[] SPECIES = { "Laks", "Sjøørret", "Pukkellaks" };
+
     /**
      * This method saves a list of fish data to the database.
      * 
@@ -149,13 +151,13 @@ public class DataServiceImpl implements DataService {
      * This method returns the annual statistics for all fish data.
      * The statistics are grouped by year.
      * 
-     * @return A list of YearDTO objects representing the annual statistics. 
+     * @return A list of YearDTO objects representing the annual statistics.
      */
 
     @Override
     public List<YearDTO> getAnnualStatistics() {
         List<Data> fishes = dataRepository
-                .findAll(Sort.by("localDate"));
+                .findAllByMultipleSpecies(SPECIES);
         return dataProcessingService.getStatistics(fishes);
     }
 
@@ -168,7 +170,7 @@ public class DataServiceImpl implements DataService {
     @Override
     public StatisticsDTO getAlltimeStatistics() {
         List<Data> fishes = dataRepository
-                .findAll(Sort.by("localDate"));
+                .findAllByMultipleSpecies(SPECIES);
         return dataProcessingService.getAlltimeStatistics(fishes);
     }
 
