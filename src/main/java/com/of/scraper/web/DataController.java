@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.of.scraper.dto.AnglerDTO;
+import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
@@ -77,6 +78,12 @@ public class DataController {
     @GetMapping("/getAnnualStatistics")
     public ResponseEntity<List<YearDTO>> getAnnualStatistics() {
         List<YearDTO> data = dataService.getAnnualStatistics();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAlltimeStatistics")
+    public ResponseEntity<StatisticsDTO> getAlltimeStatistics() {
+        StatisticsDTO data = dataService.getAlltimeStatistics();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }
