@@ -68,8 +68,10 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public AnglerDTO findByNameAndSpecies(String name, String species) {
-        AnglerStatsDTO anglerStats = dataProcessingService.createAnglerStatsDTO(name, species);
-        List<Data> dataList = dataRepository.findByNameAndSpecies(name, species);
+        AnglerStatsDTO anglerStats = dataProcessingService
+                .createAnglerStatsDTO(name, species);
+        List<Data> dataList = dataRepository
+                .findByNameAndSpecies(name, species);
 
         return new AnglerDTO(name, anglerStats, dataList);
     }
@@ -85,7 +87,8 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public Map<Integer, List<WeekDTO>> getBestWeeksYearly(String species) {
-        List<Data> fishesBySpecies = dataRepository.findBySpecies(species, Sort.by("localDate"));
+        List<Data> fishesBySpecies = dataRepository
+                .findBySpecies(species, Sort.by("localDate"));
         return dataProcessingService.getBestWeeksByYear(fishesBySpecies);
     }
 
@@ -99,7 +102,8 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public List<WeekDTO> getBestWeeksAlltime(String species) {
-        List<Data> fishesBySpecies = dataRepository.findBySpecies(species, Sort.by("localDate"));
+        List<Data> fishesBySpecies = dataRepository
+                .findBySpecies(species, Sort.by("localDate"));
         return dataProcessingService.getBestWeeksAlltime(fishesBySpecies);
     }
 
@@ -116,7 +120,8 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public List<WeekDTO> getBestBigFishWeeksAlltime(String species, double weight) {
-        List<Data> bigFishData = dataRepository.findBySpeciesAndMinWeight(species, weight);
+        List<Data> bigFishData = dataRepository
+                .findBySpeciesAndMinWeight(species, weight);
         return dataProcessingService.getBestWeeksAlltime(bigFishData);
     }
 
@@ -135,19 +140,22 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public Map<Integer, List<WeekDTO>> getBestBigFishWeeksYearly(String species, double weight) {
-        List<Data> bigFishData = dataRepository.findBySpeciesAndMinWeight(species, weight);
+        List<Data> bigFishData = dataRepository
+                .findBySpeciesAndMinWeight(species, weight);
         return dataProcessingService.getBestWeeksByYear(bigFishData);
     }
 
     @Override
     public List<YearDTO> getAnnualStatistics() {
-        List<Data> fishes = dataRepository.findAll(Sort.by("localDate"));
+        List<Data> fishes = dataRepository
+                .findAll(Sort.by("localDate"));
         return dataProcessingService.getStatistics(fishes);
     }
 
     @Override
     public StatisticsDTO getAlltimeStatistics() {
-        List<Data> fishes = dataRepository.findAll(Sort.by("localDate"));
+        List<Data> fishes = dataRepository
+                .findAll(Sort.by("localDate"));
         return dataProcessingService.getAlltimeStatistics(fishes);
     }
 

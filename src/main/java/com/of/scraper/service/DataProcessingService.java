@@ -75,8 +75,8 @@ public class DataProcessingService {
 
             bestWeeksByYear.put(
                     fishesByYear.get(0).getLocalDate().getYear(),
-                    FilteringUtils
-                            .getBestWeeks(TransformationUtils.transformToWeekDTOList(fishDataInDayDTOList)));
+                    FilteringUtils.getBestWeeks(
+                            TransformationUtils.transformToWeekDTOList(fishDataInDayDTOList)));
         }
 
         return bestWeeksByYear;
@@ -128,7 +128,7 @@ public class DataProcessingService {
 
         for (List<Data> year : fishesByYear.values()) {
             YearDTO yearDTO = TransformationUtils.transformToYearDTO(year);
-            
+
             result.add(CalculationUtils.roundYearDTOValues(yearDTO));
         }
 
