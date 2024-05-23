@@ -3,6 +3,7 @@ package com.of.scraper.util;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,21 +27,20 @@ public class TransformationUtils {
 
     public static YearDTO transformToYearDTO(List<Data> fishes) {
         YearDTO yearDTO = new YearDTO(fishes.get(0).getLocalDate().getYear());
+
+        Map<String, Integer> countMap = new HashMap<>();
+        Map<String, Double> weightMap = new HashMap<>();
+
         for (Data fish : fishes) {
-            if (fish.getSpecies().equals("Laks")) {
-                yearDTO.setSalmonCount(yearDTO.getSalmonCount() + 1);
-                yearDTO.setSalmonTotalWeight(yearDTO.getSalmonTotalWeight() + fish.getWeight());
-            }
-            if (fish.getSpecies().equals("Sjøørret")) {
-                yearDTO.setSeatroutCount(yearDTO.getSeatroutCount() + 1);
-                yearDTO.setSeatroutTotalWeight(yearDTO.getSeatroutTotalWeight() + fish.getWeight());
-            }
-            if (fish.getSpecies().equals("Pukkellaks")) {
-                yearDTO.setPukkellaksCount(yearDTO.getPukkellaksCount() + 1);
+            String species = fish.getSpecies();
+            countMap.put(species, countMap.getOrDefault(species, 0) + 1);
+
+            if (!species.equals("Pukkellaks")) {
+                weightMap.put(species, weightMap.getOrDefault(species, 0.0) + fish.getWeight());
             }
         }
-        yearDTO.setSalmonAverageWeight(yearDTO.getSalmonTotalWeight() / yearDTO.getSalmonCount());
-        yearDTO.setSeatroutAverageWeight(yearDTO.getSeatroutTotalWeight() / yearDTO.getSeatroutCount());
+        YearDTOUtils.handleSetCounts(yearDTO, countMap, weightMap);
+        YearDTOUtils.handleSetAverages(yearDTO);
 
         return yearDTO;
     }
@@ -124,7 +124,7 @@ public class TransformationUtils {
     }
 
     /**
-     * Aggregates daily fish data into a single WeekDTO. 
+     * Aggregates daily fish data into a single WeekDTO.
      * 
      * @param weekData List of DayDTOs
      * @return WeekDTO representing the aggregated fish data for the week.
