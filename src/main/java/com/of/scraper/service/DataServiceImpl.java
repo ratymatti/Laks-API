@@ -145,12 +145,25 @@ public class DataServiceImpl implements DataService {
         return dataProcessingService.getBestWeeksByYear(bigFishData);
     }
 
+    /**
+     * This method returns the annual statistics for all fish data.
+     * The statistics are grouped by year.
+     * 
+     * @return A list of YearDTO objects representing the annual statistics. 
+     */
+
     @Override
     public List<YearDTO> getAnnualStatistics() {
         List<Data> fishes = dataRepository
                 .findAll(Sort.by("localDate"));
         return dataProcessingService.getStatistics(fishes);
     }
+
+    /**
+     * This method returns the all-time statistics for all fish data.
+     * 
+     * @return A StatisticsDTO object representing the all-time statistics.
+     */
 
     @Override
     public StatisticsDTO getAlltimeStatistics() {
