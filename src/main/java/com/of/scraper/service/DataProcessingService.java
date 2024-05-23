@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.of.scraper.dto.AnglerStatsDTO;
 import com.of.scraper.dto.DayDTO;
+import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
@@ -127,11 +128,22 @@ public class DataProcessingService {
 
         for (List<Data> year : fishesByYear.values()) {
             YearDTO yearDTO = TransformationUtils.transformToYearDTO(year);
-
+            
             result.add(CalculationUtils.roundYearDTOValues(yearDTO));
         }
 
         return result;
+    }
+
+    /**
+     * Calculates and returns all-time fishing statistics as a StatisticsDTO object.
+     * 
+     * @param fishData List of Data objects, each representing a single fish's data.
+     * @return StatisticsDTO object representing all-time aggregated fish data.
+     */
+
+    public StatisticsDTO getAlltimeStatistics(List<Data> fishData) {
+        return TransformationUtils.transformToStatisticsDTO(getStatistics(fishData));
     }
 
 }
