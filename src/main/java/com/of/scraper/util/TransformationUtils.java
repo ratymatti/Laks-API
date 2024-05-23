@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.of.scraper.dto.DayDTO;
+import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
@@ -127,6 +128,28 @@ public class TransformationUtils {
         }
 
         return weeklyStats;
+    }
+
+    /**
+     * Aggregates yearly statistics into a single StatisticsDTO.
+     * 
+     * @param yearlyStatistics List of YearDTOs, each representing fish data for a
+     *                         specific year.
+     * @return StatisticsDTO representing the aggregated fish data for all years.
+     */
+
+    public static StatisticsDTO transformToStatisticsDTO(List<YearDTO> yearlyStatistics) {
+        StatisticsDTO stats = new StatisticsDTO();
+        int totalYears = yearlyStatistics.size();
+
+        for (YearDTO yearDTO : yearlyStatistics) {
+            StatisticsDTOUtils.handleStatsIncrementations(stats, yearDTO);
+        }
+
+        StatisticsDTOUtils.handleRoundValues(stats);
+        StatisticsDTOUtils.handleSetAverageValues(stats, totalYears);
+
+        return stats;
     }
 
     /**
