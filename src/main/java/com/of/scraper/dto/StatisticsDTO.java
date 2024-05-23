@@ -30,12 +30,14 @@ public class StatisticsDTO {
     private int totalSalmonCount = 0;
     private double totalSalmonWeight = 0;
     private double averageSalmonWeight = 0;
+    private double averageSalmonCountPerSeason = 0;
+
     private int totalSeatroutCount = 0;
     private double totalSeatroutWeight = 0;
     private double averageSeatroutWeight = 0;
-    private int totalPukkellaksCount = 0;
-    private double averageSalmonCountPerSeason = 0;
     private double averageSeatroutCountPerSeason = 0;
+    
+    private int totalPukkellaksCount = 0;
 
     public void incrementSalmonCount(int salmonCount) {
         this.totalSalmonCount += salmonCount;
