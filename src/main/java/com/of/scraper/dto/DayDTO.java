@@ -35,7 +35,7 @@ import lombok.Setter;
 public class DayDTO {
 
     private String date;
-    private int fishCount;
-    private double totalWeight;
-    private double averageWeight;
+    private int fishCount = 0;
+    private double totalWeight = 0.0;
+    private double averageWeight = 0.0;
 }

@@ -30,7 +30,7 @@ import lombok.Setter;
 public class AnglerStatsDTO {
 
     private String name;
-    private int count;
-    private double totalWeight;
-    private double averageWeight;
+    private int count = 0;
+    private double totalWeight = 0.0;
+    private double averageWeight = 0.0;
 }

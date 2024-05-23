@@ -36,7 +36,7 @@ public class WeekDTO {
     
     private String startDate;
     private String endDate;
-    private int count;
-    private double totalWeight;
-    private double averageWeight;
+    private int count = 0;
+    private double totalWeight= 0.0;
+    private double averageWeight = 0.0;
 }
