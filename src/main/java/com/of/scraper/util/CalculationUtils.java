@@ -16,6 +16,9 @@ public class CalculationUtils {
      */
 
     public static YearDTO roundYearDTOValues(YearDTO yearDTO) {
+        if (yearDTO == null) {
+            throw new IllegalArgumentException("YearDTO must not be null.");
+        }
         yearDTO.setSalmonTotalWeight(roundToTwoDecimals(yearDTO.getSalmonTotalWeight()));
         yearDTO.setSalmonAverageWeight(roundToTwoDecimals(yearDTO.getSalmonAverageWeight()));
         yearDTO.setSeatroutTotalWeight(roundToTwoDecimals(yearDTO.getSeatroutTotalWeight()));
