@@ -146,8 +146,8 @@ public class TransformationUtils {
             StatisticsDTOUtils.handleStatsIncrementations(stats, yearDTO);
         }
 
-        StatisticsDTOUtils.handleRoundValues(stats);
         StatisticsDTOUtils.handleSetAverageValues(stats, totalYears);
+        StatisticsDTOUtils.handleRoundValues(stats);
 
         return stats;
     }
