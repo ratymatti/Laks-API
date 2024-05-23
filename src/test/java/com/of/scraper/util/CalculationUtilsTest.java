@@ -100,8 +100,8 @@ public class CalculationUtilsTest {
         List<DayDTO> testData2 = new ArrayList<>();
 
         // Call the method under test
-        double result1 = CalculationUtils.calculateTotalWeight(testData1);
-        double result2 = CalculationUtils.calculateTotalWeight(testData2);
+        double result1 = CalculationUtils.calculateTotalWeight(testData1, DayDTO::getTotalWeight);
+        double result2 = CalculationUtils.calculateTotalWeight(testData2, DayDTO::getTotalWeight);
 
         // Check that the total weight has been calculated correctly
         assertEquals(600.0, result1);

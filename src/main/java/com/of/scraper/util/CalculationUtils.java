@@ -1,6 +1,7 @@
 package com.of.scraper.util;
 
 import java.util.List;
+import java.util.function.Function;
 
 import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.YearDTO;
@@ -40,15 +41,17 @@ public class CalculationUtils {
     }
 
     /**
-     * Calculates the total weight of fish caught in a week.
+     * Calculates the total weight of items in a list.
      * 
-     * @param weekData A list of DayDTOs from same week, each representing a day's
-     *                 fish data.
-     * @return The total weight of fish caught in the week as double.
+     * @param <T>          The type of items in the list.
+     * @param data         A list of items.
+     * @param weightGetter A function that takes an item of type T and returns its
+     *                     weight as a Double.
+     * @return The total weight of items in the list as a double.
      */
 
-    public static double calculateTotalWeight(List<DayDTO> weekData) {
-        return weekData.stream().mapToDouble(DayDTO::getTotalWeight).sum();
+    public static <T> double calculateTotalWeight(List<T> data, Function<T, Double> weightGetter) {
+        return data.stream().mapToDouble(weightGetter::apply).sum();
     }
 
     /**
