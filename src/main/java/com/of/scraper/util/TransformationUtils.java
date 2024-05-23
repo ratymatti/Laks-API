@@ -61,8 +61,10 @@ public class TransformationUtils {
         if (fishData.size() > 0) {
             String date = formatDateToMMddString(fishData.get(0).getLocalDate());
             int count = fishData.size();
-            double totalWeight = fishData.stream().mapToDouble(Data::getWeight).sum();
-            double averageWeight = (count > 0) ? totalWeight / count : 0.0;
+            double totalWeight = CalculationUtils
+                    .calculateTotalWeight(fishData, Data::getWeight);
+            double averageWeight = CalculationUtils
+                    .calculateAverageWeight(count, totalWeight);
 
             return new DayDTO(date, count, totalWeight, averageWeight);
         } else {
@@ -113,21 +115,33 @@ public class TransformationUtils {
 
         for (int i = 0; i < fishDataInDayDTOs.size(); i += 7) {
             int endIndex = Math.min(i + 7, fishDataInDayDTOs.size());
-
             List<DayDTO> weekData = fishDataInDayDTOs.subList(i, endIndex);
 
-            int count = CalculationUtils.calculateCount(weekData);
-            double totalWeight = CalculationUtils.calculateTotalWeight(weekData);
-            double averageWeight = CalculationUtils
-                    .roundToTwoDecimals(CalculationUtils.calculateAverageWeight(count, totalWeight));
-
-            String startDate = weekData.get(0).getDate();
-            String endDate = weekData.get(weekData.size() - 1).getDate();
-
-            weeklyStats.add(new WeekDTO(startDate, endDate, count, totalWeight, averageWeight));
+            weeklyStats.add(transformToWeekDTO(weekData));
         }
 
         return weeklyStats;
+    }
+
+    /**
+     * Aggregates daily fish data into a single WeekDTO. 
+     * 
+     * @param weekData List of DayDTOs
+     * @return WeekDTO representing the aggregated fish data for the week.
+     */
+
+    private static WeekDTO transformToWeekDTO(List<DayDTO> weekData) {
+        int count = CalculationUtils
+                .calculateCount(weekData);
+        double totalWeight = CalculationUtils
+                .calculateTotalWeight(weekData, DayDTO::getTotalWeight);
+        double averageWeight = CalculationUtils
+                .roundToTwoDecimals(CalculationUtils.calculateAverageWeight(count, totalWeight));
+
+        String startDate = weekData.get(0).getDate();
+        String endDate = weekData.get(weekData.size() - 1).getDate();
+
+        return new WeekDTO(startDate, endDate, count, totalWeight, averageWeight);
     }
 
     /**
