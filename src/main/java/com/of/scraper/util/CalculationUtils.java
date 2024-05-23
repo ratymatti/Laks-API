@@ -40,21 +40,6 @@ public class CalculationUtils {
     }
 
     /**
-     * Calculates the average weight of fish caught in a week.
-     * 
-     * @param count       The total fish count for the week.
-     * @param totalWeight The total weight of fish caught in the week.
-     * @return The average weight of fish caught in the week as double.
-     */
-
-    public static double calculateAverageWeight(int count, double totalWeight) {
-        if (count < 0 || totalWeight < 0) {
-            throw new IllegalArgumentException("Total count and total seasons must be non-negative.");
-        }
-        return (count > 0) ? totalWeight / count : 0.0;
-    }
-
-    /**
      * Calculates the total weight of fish caught in a week.
      * 
      * @param weekData A list of DayDTOs from same week, each representing a day's
@@ -79,8 +64,24 @@ public class CalculationUtils {
     }
 
     /**
+     * Calculates the average weight of fish caught in a week.
+     * 
+     * @param count       The total fish count for the week.
+     * @param totalWeight The total weight of fish caught in the week.
+     * @return The average weight of fish caught in the week as double.
+     */
+
+    public static double calculateAverageWeight(int count, double totalWeight) {
+        if (count < 0 || totalWeight < 0) {
+            throw new IllegalArgumentException("Total count and total seasons must be non-negative.");
+        }
+        return (count > 0) ? totalWeight / count : 0.0;
+    }
+
+    /**
      * Calculates the average amount of fish caught per season.
-     * @param totalCount int 
+     * 
+     * @param totalCount   int
      * @param totalSeasons int
      * @return average value as double
      */
@@ -89,29 +90,4 @@ public class CalculationUtils {
         return (totalSeasons > 0) ? (double) totalCount / totalSeasons : 0.0;
     }
 
-    /**
-     * Calculates the average from two integers and rounds it to two
-     * decimal places using calculateAverageAmount and roundToTwoDecimals
-     * 
-     * @param count int
-     * @param total int
-     * @return average value as double
-     */
-
-    public static double calculateAndRoundAverageInt(int count, int total) {
-        return roundToTwoDecimals(calculateAverageAmount(count, total));
-    }
-
-    /**
-     * Calculates the average from int and double and rounds it to two
-     * decimal places using calculateAverageWeight and roundToTwoDecimals
-     * 
-     * @param count int
-     * @param total double
-     * @return average value as double
-     */
-
-    public static double calculateAndRoundAverageDouble(int count, double total) {
-        return roundToTwoDecimals(calculateAverageWeight(count, total));
-    }
 }
