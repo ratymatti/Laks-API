@@ -3,7 +3,6 @@ package com.of.scraper.util;
 import java.util.List;
 import java.util.function.Function;
 
-import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.YearDTO;
 
 public class CalculationUtils {
@@ -57,13 +56,16 @@ public class CalculationUtils {
     /**
      * Calculates the total fish count for a week.
      * 
-     * @param weekData A list of DayDTOs from same week, each representing a day's
-     *                 fish data.
+     * @param <T> The type of items in the list.
+     * @param data A list of items.
+     * @param countGetter A function that takes an item of type T and returns
+     *                    its count as an Integer.
+     * 
      * @return The total fish count for the week as int.
      */
 
-    public static int calculateCount(List<DayDTO> weekData) {
-        return weekData.stream().mapToInt(DayDTO::getFishCount).sum();
+    public static <T> int calculateCount(List<T> data, Function<T, Integer> countGetter) {
+        return data.stream().mapToInt(countGetter::apply).sum();
     }
 
     /**
