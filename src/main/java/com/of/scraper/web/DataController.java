@@ -86,4 +86,10 @@ public class DataController {
         StatisticsDTO data = dataService.getAlltimeStatistics();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
+
+    @GetMapping("/getMedianAndAverage")
+    public ResponseEntity<HttpStatus> getMedianAndAverage() {
+        dataService.getMedianAndAverage();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
