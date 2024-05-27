@@ -20,4 +20,5 @@ public interface DataService {
     Map<Integer, List<WeekDTO>> getBestBigFishWeeksYearly(String species, double weight);
     List<YearDTO> getAnnualStatistics();
     StatisticsDTO getAlltimeStatistics();
+    void getMedianAndAverage();
 }

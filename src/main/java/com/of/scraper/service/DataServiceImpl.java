@@ -174,4 +174,10 @@ public class DataServiceImpl implements DataService {
         return dataProcessingService.getAlltimeStatistics(fishes);
     }
 
+    @Override
+    public void getMedianAndAverage() {
+        List<Data> fishes = dataRepository.findBySpecies("Laks", Sort.by("localDate"));
+        dataProcessingService.getMedianOfFishesPerDay(fishes);
+    }
+
 }
