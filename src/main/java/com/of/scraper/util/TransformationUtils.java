@@ -132,7 +132,7 @@ public class TransformationUtils {
 
     private static WeekDTO transformToWeekDTO(List<DayDTO> weekData) {
         int count = CalculationUtils
-                .calculateCount(weekData);
+                .calculateCount(weekData, DayDTO::getFishCount);
         double totalWeight = CalculationUtils
                 .calculateTotalWeight(weekData, DayDTO::getTotalWeight);
         double averageWeight = CalculationUtils
