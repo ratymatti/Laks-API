@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import org.springframework.stereotype.Service;
 
 import com.of.scraper.dto.AnglerStatsDTO;
+import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
@@ -141,6 +142,39 @@ public class DataProcessingService {
 
     public StatisticsDTO getAlltimeStatistics(List<Data> fishData) {
         return TransformationUtils.transformToStatisticsDTO(getStatistics(fishData));
+    }
+
+    public void getMedianOfFishesPerDay(List<Data> fishData) {
+        Map<Integer, List<Data>> fishesByYear = GroupingUtils
+                .groupByYear(FilteringUtils
+                        .filterOutOffSeasonFishes(fishData));
+
+        Map<Integer, AverageAndMedianDTO> fishCountMedianAndAverage = new TreeMap<>();
+
+        for (List<Data> year : fishesByYear.values()) {
+            Map<String, Integer> fishCounts = new TreeMap<>();
+
+            for (Data fish : year) {
+                fishCounts.put(TransformationUtils.formatDateToMMddString(fish.getLocalDate()),
+                        fishCounts.getOrDefault(TransformationUtils
+                                .formatDateToMMddString(fish.getLocalDate()), 0) + 1);
+            }
+
+            List<Integer> counts = new ArrayList<>(fishCounts.values());
+            counts.sort(Integer::compareTo);
+
+            int n = counts.size();
+            int average = counts.stream().mapToInt(Integer::intValue).sum() / n;
+            int median;
+            if (n % 2 == 0) {
+                median = (counts.get(n / 2) + counts.get(n / 2 - 1)) / 2;
+            } else {
+                median = counts.get(n / 2);
+            }
+            fishCountMedianAndAverage.put(year.get(0).getLocalDate().getYear(),
+                    new AverageAndMedianDTO(average, median));
+            
+        }
     }
 
 }
