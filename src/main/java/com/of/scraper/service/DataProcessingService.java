@@ -164,7 +164,7 @@ public class DataProcessingService {
             counts.sort(Integer::compareTo);
 
             int n = counts.size();
-            int average = counts.stream().mapToInt(Integer::intValue).sum() / n;
+            int average =  CalculationUtils.calculateCount(counts, Integer::intValue);
             int median;
             if (n % 2 == 0) {
                 median = (counts.get(n / 2) + counts.get(n / 2 - 1)) / 2;
