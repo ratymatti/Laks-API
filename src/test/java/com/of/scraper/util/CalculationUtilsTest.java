@@ -115,8 +115,8 @@ public class CalculationUtilsTest {
         List<DayDTO> testData2 = new ArrayList<>();
 
         // Call the method under test
-        int result1 = CalculationUtils.calculateCount(testData1);
-        int result2 = CalculationUtils.calculateCount(testData2);
+        int result1 = CalculationUtils.calculateCount(testData1, DayDTO::getFishCount);
+        int result2 = CalculationUtils.calculateCount(testData2, DayDTO::getFishCount);
 
         // Check that the count has been calculated correctly
         assertEquals(60, result1);
