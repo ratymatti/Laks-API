@@ -114,4 +114,20 @@ public class TestDataUtil {
         weekDTO.setCount(count);
         return weekDTO;
     }
+
+    public static List<Data> createTestDataForAverageAndMedianTest() {
+        List<Data> testData = new ArrayList<>();
+
+        for (int i = 1; i <= 30; i++) {
+            for (int j = 0; j < i; j++) {
+                testData.add(new Data("Laks", 10.0, LocalDate.of(2020, 7, i)));
+            }
+        }
+
+        return testData;
+    }
+
+    public static void main(String[] args) {
+        
+    }
 }
