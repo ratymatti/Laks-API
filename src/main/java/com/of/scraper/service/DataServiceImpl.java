@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.of.scraper.dto.AnglerDTO;
 import com.of.scraper.dto.AnglerStatsDTO;
+import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
@@ -175,9 +176,9 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public void getMedianAndAverage() {
+    public Map<Integer, AverageAndMedianDTO> getAverageAndMedian() {
         List<Data> fishes = dataRepository.findBySpecies("Laks", Sort.by("localDate"));
-        dataProcessingService.getMedianOfFishesPerDay(fishes);
+        return dataProcessingService.getAverageAndMedianOfFishesPerDay(fishes);
     }
 
 }

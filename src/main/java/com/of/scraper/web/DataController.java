@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.of.scraper.dto.AnglerDTO;
+import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
@@ -87,9 +88,9 @@ public class DataController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @GetMapping("/getMedianAndAverage")
-    public ResponseEntity<HttpStatus> getMedianAndAverage() {
-        dataService.getMedianAndAverage();
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping("/getAverageAndMedian")
+    public ResponseEntity<Map<Integer, AverageAndMedianDTO>> getAverageAndMedian() {
+        Map<Integer, AverageAndMedianDTO> data = dataService.getAverageAndMedian();
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

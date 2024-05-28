@@ -144,12 +144,12 @@ public class DataProcessingService {
         return TransformationUtils.transformToStatisticsDTO(getStatistics(fishData));
     }
 
-    public void getMedianOfFishesPerDay(List<Data> fishData) {
+    public Map<Integer, AverageAndMedianDTO> getAverageAndMedianOfFishesPerDay(List<Data> fishData) {
         Map<Integer, List<Data>> fishesByYear = GroupingUtils
                 .groupByYear(FilteringUtils
                         .filterOutOffSeasonFishes(fishData));
 
-        Map<Integer, AverageAndMedianDTO> fishCountMedianAndAverage = new TreeMap<>();
+        Map<Integer, AverageAndMedianDTO> fishCountAverageAndMedian = new TreeMap<>();
 
         for (List<Data> year : fishesByYear.values()) {
             Map<String, Integer> fishCounts = new TreeMap<>();
@@ -164,17 +164,21 @@ public class DataProcessingService {
             counts.sort(Integer::compareTo);
 
             int n = counts.size();
-            int average =  CalculationUtils.calculateCount(counts, Integer::intValue);
+            int totalCountPerYear =  CalculationUtils.calculateCount(counts, Integer::intValue);
+            double average = CalculationUtils.roundToTwoDecimals(CalculationUtils.calculateAverageAmount(totalCountPerYear, n));
+            
             int median;
             if (n % 2 == 0) {
                 median = (counts.get(n / 2) + counts.get(n / 2 - 1)) / 2;
             } else {
                 median = counts.get(n / 2);
             }
-            fishCountMedianAndAverage.put(year.get(0).getLocalDate().getYear(),
-                    new AverageAndMedianDTO(average, median));
             
+            fishCountAverageAndMedian.put(year.get(0).getLocalDate().getYear(),
+                    new AverageAndMedianDTO(average, median));
         }
+        
+        return fishCountAverageAndMedian;
     }
 
 }

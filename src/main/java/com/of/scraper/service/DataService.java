@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.of.scraper.dto.AnglerDTO;
+import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
@@ -20,5 +21,5 @@ public interface DataService {
     Map<Integer, List<WeekDTO>> getBestBigFishWeeksYearly(String species, double weight);
     List<YearDTO> getAnnualStatistics();
     StatisticsDTO getAlltimeStatistics();
-    void getMedianAndAverage();
+    Map<Integer, AverageAndMedianDTO> getAverageAndMedian();
 }
