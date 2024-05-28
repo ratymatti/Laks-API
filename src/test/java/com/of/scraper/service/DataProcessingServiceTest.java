@@ -57,37 +57,45 @@ public class DataProcessingServiceTest {
     @Test
     public void testGetBestWeeksByYear() {
         // Arrange
-        List<Data> fishData = TestDataUtil.createTestData();
+        List<Data> fishData = TestDataUtil.createTestData(2020, 2);
 
         // Act
         Map<Integer, List<WeekDTO>> result = dataProcessingService.getBestWeeksByYear(fishData);
 
         // Assert
-        assertEquals(10.0, result.get(2022).get(0).getAverageWeight());
-        assertEquals(11, result.get(2022).get(0).getCount());
+        assertEquals(10.0, result.get(2020).get(0).getAverageWeight());
+        assertEquals("07.20", result.get(2020).get(0).getStartDate());
+        assertEquals("07.26", result.get(2020).get(0).getEndDate());
+        assertEquals(161, result.get(2020).get(0).getCount());
+        assertEquals(1610, result.get(2020).get(0).getTotalWeight());
         assertEquals(10.0, result.get(2021).get(0).getAverageWeight());
-        assertEquals(11, result.get(2021).get(0).getCount());
-        assertEquals(8, result.get(2022).get(1).getCount());
+        assertEquals("07.20", result.get(2021).get(0).getStartDate());
+        assertEquals("07.26", result.get(2021).get(0).getEndDate());
+        assertEquals(161, result.get(2021).get(0).getCount());
+        assertEquals(1610, result.get(2021).get(0).getTotalWeight());
     }
 
     @Test
     public void testGetBestWeeksAlltime() {
         // Arrange
-        List<Data> fishData = TestDataUtil.createTestData();
+        List<Data> fishData = TestDataUtil.createTestData(2020, 2);
 
         // Act
         List<WeekDTO> result = dataProcessingService.getBestWeeksAlltime(fishData);
 
         // Assert
-        assertEquals(22, result.get(0).getCount());
+        assertEquals(322, result.get(0).getCount());
+        assertEquals("07.20", result.get(0).getStartDate());
+        assertEquals("07.26", result.get(0).getEndDate());
+        assertEquals(3220, result.get(0).getTotalWeight());
         assertEquals(10.0, result.get(0).getAverageWeight());
     }
 
     @Test
     public void testGetAverageAndMedianOfFishesPerDay() {
         // Arrange
-        List<Data> testData1 = TestDataUtil.createTestDataForAverageAndMedianTest();
-        List<Data> testData2 = TestDataUtil.createTestDataForAverageAndMedianTest();
+        List<Data> testData1 = TestDataUtil.createTestData(2020, 1);
+        List<Data> testData2 = TestDataUtil.createTestData(2020, 1);
         testData2.remove(0);
 
         // Act

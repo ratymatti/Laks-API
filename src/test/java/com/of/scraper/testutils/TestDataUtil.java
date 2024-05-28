@@ -19,42 +19,6 @@ import com.of.scraper.entity.Data;
 
 public class TestDataUtil {
 
-    public static List<Data> createTestData() {
-        List<Data> fishData = new ArrayList<>();
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 19)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 20)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 21)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 21)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 21)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 1)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 2)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 3)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 4)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 5)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 5)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 5)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 1)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 2)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 3)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 7, 4)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 1)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 2)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 3)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 4)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 5)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 5)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 5)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 1)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 2)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 3)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2021, 7, 4)));
-
-        return fishData;
-    }
-
     public static List<DayDTO> createDayDTOtestDataList() {
         DayDTO dayDTO1 = new DayDTO("01.01", 10, 100.0, 10.0);
         DayDTO dayDTO2 = new DayDTO("01.02", 20, 200.0, 10.0);
@@ -115,19 +79,18 @@ public class TestDataUtil {
         return weekDTO;
     }
 
-    public static List<Data> createTestDataForAverageAndMedianTest() {
+    public static List<Data> createTestData(int year, int numOfYears) {
         List<Data> testData = new ArrayList<>();
 
-        for (int i = 1; i <= 30; i++) {
-            for (int j = 0; j < i; j++) {
-                testData.add(new Data("Laks", 10.0, LocalDate.of(2020, 7, i)));
+        for (int i = 0; i < numOfYears; i++) {
+            for (int j = 1; j <= 30; j++) {
+                for (int k = 0; k < j; k++) {
+                    testData.add(new Data("Laks", 10.0, LocalDate.of(year, 7, j)));
+                }
             }
+            year++;
         }
-
         return testData;
     }
 
-    public static void main(String[] args) {
-        
-    }
 }
