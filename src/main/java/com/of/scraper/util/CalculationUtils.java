@@ -87,15 +87,18 @@ public class CalculationUtils {
     }
 
     /**
-     * Calculates the average amount of fish caught per season.
+     * Calculates the average from two integers. 
      * 
      * @param totalCount   int
-     * @param totalSeasons int
+     * @param timePeriod int
      * @return average value as double
      */
 
-    public static double calculateAverageAmount(int totalCount, int totalSeasons) {
-        return (totalSeasons > 0) ? (double) totalCount / totalSeasons : 0.0;
+    public static double calculateAverageAmount(int totalCount, int timePeriod) {
+        if (totalCount < 0 || timePeriod < 0) {
+            throw new IllegalArgumentException("Total count and total seasons must be non-negative.");
+        }
+        return (totalCount > 0) ? (double) totalCount / timePeriod : 0.0;
     }
 
     /**
