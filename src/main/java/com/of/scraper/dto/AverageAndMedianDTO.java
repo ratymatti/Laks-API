@@ -2,11 +2,15 @@ package com.of.scraper.dto;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Embeddable
 @AllArgsConstructor
+@Getter
+@Setter
 public class AverageAndMedianDTO {
     
-    int average;
+    double average;
     int median;
 }
