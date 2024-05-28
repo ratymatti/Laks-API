@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.of.scraper.dto.AnglerStatsDTO;
+import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.repository.DataRepository;
@@ -60,7 +61,6 @@ public class DataProcessingServiceTest {
 
         // Act
         Map<Integer, List<WeekDTO>> result = dataProcessingService.getBestWeeksByYear(fishData);
-        System.out.println(result.get(2022).get(0).getCount());
 
         // Assert
         assertEquals(10.0, result.get(2022).get(0).getAverageWeight());
@@ -81,6 +81,24 @@ public class DataProcessingServiceTest {
         // Assert
         assertEquals(22, result.get(0).getCount());
         assertEquals(10.0, result.get(0).getAverageWeight());
+    }
+
+    @Test
+    public void testGetAverageAndMedianOfFishesPerDay() {
+        // Arrange
+        List<Data> testData1 = TestDataUtil.createTestDataForAverageAndMedianTest();
+        List<Data> testData2 = TestDataUtil.createTestDataForAverageAndMedianTest();
+        testData2.remove(0);
+
+        // Act
+        Map<Integer, AverageAndMedianDTO> result1 = dataProcessingService.getAverageAndMedianOfFishesPerDay(testData1);
+        Map<Integer, AverageAndMedianDTO> result2 = dataProcessingService.getAverageAndMedianOfFishesPerDay(testData2);
+
+        // Assert
+        assertEquals(15.5, result1.get(2020).getMedian());
+        assertEquals(15.5, result1.get(2020).getAverage());
+        assertEquals(16, result2.get(2020).getMedian());
+        assertEquals(16, result2.get(2020).getAverage());
     }
 
 }
