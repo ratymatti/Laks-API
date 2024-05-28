@@ -3,7 +3,8 @@ package com.of.scraper.dto;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -29,12 +30,14 @@ import lombok.Setter;
 @Embeddable
 @Getter
 @Setter
-@NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 
 public class DayDTO {
 
+    @NonNull
     private String date;
+
     private int fishCount = 0;
     private double totalWeight = 0.0;
     private double averageWeight = 0.0;
