@@ -144,41 +144,20 @@ public class DataProcessingService {
         return TransformationUtils.transformToStatisticsDTO(getStatistics(fishData));
     }
 
+    /**
+     * Calculates and returns all-time in-season salmon fishing statistics as Map where
+     * key represents year and values are AverateAndMedianDTO from that year.
+     *  
+     * @param fishData List of all salmons caught
+     * @return Map with AverageAndMedianDTO values
+     */
+
     public Map<Integer, AverageAndMedianDTO> getAverageAndMedianOfFishesPerDay(List<Data> fishData) {
         Map<Integer, List<Data>> fishesByYear = GroupingUtils
                 .groupByYear(FilteringUtils
                         .filterOutOffSeasonFishes(fishData));
 
-        Map<Integer, AverageAndMedianDTO> fishCountAverageAndMedian = new TreeMap<>();
-
-        for (List<Data> year : fishesByYear.values()) {
-            Map<String, Integer> fishCounts = new TreeMap<>();
-
-            for (Data fish : year) {
-                fishCounts.put(TransformationUtils.formatDateToMMddString(fish.getLocalDate()),
-                        fishCounts.getOrDefault(TransformationUtils
-                                .formatDateToMMddString(fish.getLocalDate()), 0) + 1);
-            }
-
-            List<Integer> counts = new ArrayList<>(fishCounts.values());
-            counts.sort(Integer::compareTo);
-
-            int n = counts.size();
-            int totalCountPerYear =  CalculationUtils.calculateCount(counts, Integer::intValue);
-            double average = CalculationUtils.roundToTwoDecimals(CalculationUtils.calculateAverageAmount(totalCountPerYear, n));
-            
-            int median;
-            if (n % 2 == 0) {
-                median = (counts.get(n / 2) + counts.get(n / 2 - 1)) / 2;
-            } else {
-                median = counts.get(n / 2);
-            }
-            
-            fishCountAverageAndMedian.put(year.get(0).getLocalDate().getYear(),
-                    new AverageAndMedianDTO(average, median));
-        }
-        
-        return fishCountAverageAndMedian;
+        return TransformationUtils.transformToAverageAndMedianDTOMap(fishesByYear);
     }
 
 }
