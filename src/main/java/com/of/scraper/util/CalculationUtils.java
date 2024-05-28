@@ -1,9 +1,12 @@
 package com.of.scraper.util;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 import com.of.scraper.dto.YearDTO;
+import com.of.scraper.entity.Data;
 
 public class CalculationUtils {
 
@@ -56,8 +59,8 @@ public class CalculationUtils {
     /**
      * Calculates the total fish count for a week.
      * 
-     * @param <T> The type of items in the list.
-     * @param data A list of items.
+     * @param <T>         The type of items in the list.
+     * @param data        A list of items.
      * @param countGetter A function that takes an item of type T and returns
      *                    its count as an Integer.
      * 
@@ -93,6 +96,45 @@ public class CalculationUtils {
 
     public static double calculateAverageAmount(int totalCount, int totalSeasons) {
         return (totalSeasons > 0) ? (double) totalCount / totalSeasons : 0.0;
+    }
+
+    /**
+     * Calculates daily counts of fish caught per season.
+     * 
+     * @param year List of all fishes caught in season.
+     * @return Map where keys are date in format MM/dd and values are total count
+     *         from that date.
+     */
+
+    public static Map<String, Integer> calculateDailyCounts(List<Data> year) {
+        Map<String, Integer> fishCounts = new TreeMap<>();
+
+        for (Data fish : year) {
+            fishCounts.put(TransformationUtils.formatDateToMMddString(fish.getLocalDate()),
+                    fishCounts.getOrDefault(TransformationUtils
+                            .formatDateToMMddString(fish.getLocalDate()), 0) + 1);
+        }
+
+        return fishCounts;
+    }
+
+    /**
+     * Calculates median amount from List of Integers, first it sorts
+     * the list and then returns median calculated from it.
+     * 
+     * @param counts List of integers
+     * @return double median calculated from List counts
+     */
+
+    public static double calculateMedianAmount(List<Integer> counts) {
+        counts.sort(Integer::compareTo);
+        int length = counts.size();
+
+        if (length % 2 == 0) {
+            return ((double) counts.get(length / 2) + counts.get(length / 2 - 1)) / 2;
+        } else {
+            return counts.get(length / 2);
+        }
     }
 
 }
