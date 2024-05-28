@@ -56,12 +56,12 @@ public class TransformationUtils {
      * 
      * @param fishData List of Data objects from same date, each representing a
      *                 single fish's data.
+     * @param date     The date of the fish data in "MM.dd" format.
      * @return DayDTO representing the aggregated fishing data for the day.
      */
 
-    public static DayDTO transformToDayDTO(List<Data> fishData) {
+    public static DayDTO transformToDayDTO(List<Data> fishData, String date) {
         if (fishData.size() > 0) {
-            String date = formatDateToMMddString(fishData.get(0).getLocalDate());
             int count = fishData.size();
             double totalWeight = CalculationUtils
                     .calculateTotalWeight(fishData, Data::getWeight);
@@ -70,7 +70,7 @@ public class TransformationUtils {
 
             return new DayDTO(date, count, totalWeight, averageWeight);
         } else {
-            return new DayDTO();
+            return new DayDTO(date);
         }
     }
 
@@ -90,7 +90,7 @@ public class TransformationUtils {
         List<DayDTO> fishDataInDayDTOList = new ArrayList<>();
 
         for (String date : fishDataByDayAndMonth.keySet()) {
-            fishDataInDayDTOList.add(transformToDayDTO(fishDataByDayAndMonth.get(date)));
+            fishDataInDayDTOList.add(transformToDayDTO(fishDataByDayAndMonth.get(date), date));
         }
 
         return fishDataInDayDTOList;
