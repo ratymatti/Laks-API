@@ -12,5 +12,5 @@ import lombok.Setter;
 public class AverageAndMedianDTO {
     
     double average;
-    int median;
+    double median;
 }
