@@ -192,7 +192,8 @@ public class CalculationUtilsTest {
 
         // Test with null List
         List<Data> testData3 = null;
-        assertThrows(NullPointerException.class, () -> CalculationUtils.calculateDailyCounts(testData3));
+        assertThrows(IllegalArgumentException.class,
+                () -> CalculationUtils.calculateDailyCounts(testData3));
     }
 
     @Test
