@@ -223,6 +223,9 @@ public class TransformationUtils {
      */
 
     public static String formatDateToMMddString(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
         return date.format(DateTimeFormatter.ofPattern("MM.dd"));
     }
 }
