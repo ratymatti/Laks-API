@@ -14,7 +14,5 @@ import lombok.AllArgsConstructor;
 public class FishServiceImpl implements FishService {
 
     private FishRepository fishRepository;
-    
-    
 
 }
