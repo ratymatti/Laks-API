@@ -98,10 +98,13 @@ public class CalculationUtils {
      */
 
     public static double calculateAverageAmount(int totalCount, int timePeriod) {
-        if (totalCount <= 0 || timePeriod <= 0) {
+        if (totalCount < 0 || timePeriod < 0) {
             throw new IllegalArgumentException("Total count and total seasons must be greater than 0.");
         }
-        return (double) totalCount / timePeriod;
+        if ((totalCount > 0 && timePeriod == 0) || (totalCount == 0 && timePeriod > 0)) {
+            throw new IllegalStateException("Invalid combination of count and total weight.");
+        }
+        return (totalCount > 0) ? (double) totalCount / timePeriod : 0.0;
     }
 
     /**
