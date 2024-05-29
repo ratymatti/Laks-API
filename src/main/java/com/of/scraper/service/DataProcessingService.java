@@ -16,6 +16,7 @@ import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.repository.DataRepository;
 import com.of.scraper.util.CalculationUtils;
+import com.of.scraper.util.DayDTOUtils;
 import com.of.scraper.util.FilteringUtils;
 import com.of.scraper.util.GroupingUtils;
 import com.of.scraper.util.TransformationUtils;
@@ -72,7 +73,7 @@ public class DataProcessingService {
             Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils
                     .groupByDayAndMonth(fishesByYear);
 
-            List<DayDTO> fishDataInDayDTOList = TransformationUtils
+            List<DayDTO> fishDataInDayDTOList = DayDTOUtils
                     .transformToDayDTOList(fishDataByDayAndMonth);
 
             bestWeeksByYear.put(
@@ -97,7 +98,7 @@ public class DataProcessingService {
         Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils
                 .groupByDayAndMonth(FilteringUtils.filterOutOffSeasonFishes(fishData));
 
-        List<DayDTO> fishDataInDayDTOList = TransformationUtils
+        List<DayDTO> fishDataInDayDTOList = DayDTOUtils
                 .transformToDayDTOList(fishDataByDayAndMonth);
 
         return FilteringUtils
