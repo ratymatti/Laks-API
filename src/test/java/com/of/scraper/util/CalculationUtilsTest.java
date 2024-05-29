@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -154,26 +155,26 @@ public class CalculationUtilsTest {
         double expectedAverageAmount1 = 2.0;
         double result1 = CalculationUtils.calculateAverageAmount(testCount1, testTimePeriod1);
         assertEquals(expectedAverageAmount1, result1);
-        
+
         // Test with count as zero
         assertThrows(IllegalStateException.class,
-        () -> CalculationUtils.calculateAverageAmount(ZERO_INT, VALID_INT));
-        
+                () -> CalculationUtils.calculateAverageAmount(ZERO_INT, VALID_INT));
+
         // Test with time period as zero
         assertThrows(IllegalStateException.class,
-        () -> CalculationUtils.calculateAverageAmount(VALID_INT, ZERO_INT));
-        
+                () -> CalculationUtils.calculateAverageAmount(VALID_INT, ZERO_INT));
+
         // Test with both count and time period as zero
         double result4 = CalculationUtils.calculateAverageAmount(ZERO_INT, ZERO_INT);
         assertEquals(ZERO_DOUBLE, result4);
-        
+
         // Test with negative count
         assertThrows(IllegalArgumentException.class,
-        () -> CalculationUtils.calculateAverageAmount(INVALID_INT, VALID_INT));
-        
+                () -> CalculationUtils.calculateAverageAmount(INVALID_INT, VALID_INT));
+
         // Test with negative time period
         assertThrows(IllegalArgumentException.class,
-        () -> CalculationUtils.calculateAverageAmount(VALID_INT, INVALID_INT));
+                () -> CalculationUtils.calculateAverageAmount(VALID_INT, INVALID_INT));
     }
 
     @Test
@@ -183,15 +184,38 @@ public class CalculationUtilsTest {
         Map<String, Integer> result1 = CalculationUtils.calculateDailyCounts(testData1);
         assertEquals(30, result1.size());
         assertEquals(28, result1.get("07.28"));
-    
+
         // Test with empty List
         List<Data> testData2 = new ArrayList<>();
         Map<String, Integer> result2 = CalculationUtils.calculateDailyCounts(testData2);
         assertTrue(result2.isEmpty());
-    
+
         // Test with null List
         List<Data> testData3 = null;
         assertThrows(NullPointerException.class, () -> CalculationUtils.calculateDailyCounts(testData3));
     }
-    
+
+    @Test
+    public void testCalculateMedianAmount() throws Exception {
+        // Test with odd number of elements
+        List<Integer> testData1 = Arrays.asList(1, 2, 3, 4, 5);
+        double result1 = CalculationUtils.calculateMedianAmount(testData1);
+        assertEquals(3.0, result1);
+
+        // Test with even number of elements
+        List<Integer> testData2 = Arrays.asList(1, 2, 3, 4);
+        double result2 = CalculationUtils.calculateMedianAmount(testData2);
+        assertEquals(2.5, result2);
+
+        // Test with empty List
+        List<Integer> testData3 = new ArrayList<>();
+        double result3 = CalculationUtils.calculateMedianAmount(testData3);
+        assertEquals(ZERO_DOUBLE, result3);
+
+        // Test with null List
+        List<Integer> testData4 = null;
+        assertThrows(IllegalArgumentException.class,
+                () -> CalculationUtils.calculateMedianAmount(testData4));
+    }
+
 }
