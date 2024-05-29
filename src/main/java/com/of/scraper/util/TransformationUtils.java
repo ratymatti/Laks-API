@@ -8,35 +8,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.of.scraper.dto.AverageAndMedianDTO;
-import com.of.scraper.dto.StatisticsDTO;
-import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 
 public class TransformationUtils {
-
-    
-
-    /**
-     * Aggregates yearly statistics into a single StatisticsDTO.
-     * 
-     * @param yearlyStatistics List of YearDTOs, each representing fish data for a
-     *                         specific year.
-     * @return StatisticsDTO representing the aggregated fish data for all years.
-     */
-
-    public static StatisticsDTO transformToStatisticsDTO(List<YearDTO> yearlyStatistics) {
-        StatisticsDTO stats = new StatisticsDTO();
-        int totalYears = yearlyStatistics.size();
-
-        for (YearDTO yearDTO : yearlyStatistics) {
-            StatisticsDTOUtils.handleStatsIncrementations(stats, yearDTO);
-        }
-
-        StatisticsDTOUtils.handleSetAverageValues(stats, totalYears);
-        StatisticsDTOUtils.handleRoundValues(stats);
-
-        return stats;
-    }
 
     /**
      * Transforms daily counts from year to average and median from that specific

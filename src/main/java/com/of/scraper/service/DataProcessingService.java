@@ -19,6 +19,7 @@ import com.of.scraper.util.CalculationUtils;
 import com.of.scraper.util.DayDTOUtils;
 import com.of.scraper.util.FilteringUtils;
 import com.of.scraper.util.GroupingUtils;
+import com.of.scraper.util.StatisticsDTOUtils;
 import com.of.scraper.util.TransformationUtils;
 import com.of.scraper.util.WeekDTOUtils;
 import com.of.scraper.util.YearDTOUtils;
@@ -146,7 +147,7 @@ public class DataProcessingService {
      */
 
     public StatisticsDTO getAlltimeStatistics(List<Data> fishData) {
-        return TransformationUtils.transformToStatisticsDTO(getStatistics(fishData));
+        return StatisticsDTOUtils.transformToStatisticsDTO(getStatistics(fishData));
     }
 
     /**
@@ -165,5 +166,4 @@ public class DataProcessingService {
 
         return TransformationUtils.transformToAverageAndMedianDTOMap(fishesByYear);
     }
-
 }

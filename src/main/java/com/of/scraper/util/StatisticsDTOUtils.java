@@ -1,5 +1,6 @@
 package com.of.scraper.util;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -9,11 +10,33 @@ import com.of.scraper.dto.YearDTO;
 /**
  * Utility class for handling StatisticsDTO objects.
  * 
- * @methods handleStatsIncrementations, handleRoundValues,
+ * @methods transformToStatisticsDTO, handleStatsIncrementations, handleRoundValues,
  *          handleSetAverageValues, roundAndSet, calculateAndSetAverages
  */
 
 public class StatisticsDTOUtils {
+
+    /**
+     * Aggregates yearly statistics into a single StatisticsDTO.
+     * 
+     * @param yearlyStatistics List of YearDTOs, each representing fish data for a
+     *                         specific year.
+     * @return StatisticsDTO representing the aggregated fish data for all years.
+     */
+
+    public static StatisticsDTO transformToStatisticsDTO(List<YearDTO> yearlyStatistics) {
+        StatisticsDTO stats = new StatisticsDTO();
+        int totalYears = yearlyStatistics.size();
+
+        for (YearDTO yearDTO : yearlyStatistics) {
+            handleStatsIncrementations(stats, yearDTO);
+        }
+
+        handleSetAverageValues(stats, totalYears);
+        handleRoundValues(stats);
+
+        return stats;
+    }
 
     /**
      * Increments the total counts and weights of salmon, seatrout, and pukkellaks
@@ -23,7 +46,7 @@ public class StatisticsDTOUtils {
      * @param yearDTO The YearDTO to extract the data from.
      */
 
-    public static void handleStatsIncrementations(StatisticsDTO stats, YearDTO yearDTO) {
+    private static void handleStatsIncrementations(StatisticsDTO stats, YearDTO yearDTO) {
         stats.incrementSalmonCount(yearDTO.getSalmonCount());
         stats.incrementSalmonWeight(yearDTO.getSalmonTotalWeight());
         stats.incrementSeatroutCount(yearDTO.getSeatroutCount());
@@ -32,13 +55,14 @@ public class StatisticsDTOUtils {
     }
 
     /**
-     * Rounds the total salmon and seatrout weights, average weights and average counts
+     * Rounds the total salmon and seatrout weights, average weights and average
+     * counts
      * in the provided StatisticsDTO to two decimal places.
      * 
      * @param stats The StatisticsDTO to update.
      */
 
-    public static void handleRoundValues(StatisticsDTO stats) {
+    private static void handleRoundValues(StatisticsDTO stats) {
         roundAndSet(
                 stats,
                 StatisticsDTO::getTotalSalmonWeight,
