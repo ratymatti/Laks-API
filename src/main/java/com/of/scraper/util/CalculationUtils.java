@@ -37,6 +37,10 @@ public class CalculationUtils {
      */
 
     public static double roundToTwoDecimals(double value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("Value cannot be negative");
+        }
+        
         final int NUM_OF_DECIMALS = 2;
         return Math.round(
                 value * Math.pow(10, NUM_OF_DECIMALS)) / Math.pow(10, NUM_OF_DECIMALS);
