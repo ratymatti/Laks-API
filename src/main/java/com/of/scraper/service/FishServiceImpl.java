@@ -42,7 +42,7 @@ public class FishServiceImpl implements FishService {
 
         fish.setLocation(data.getLocation());
 
-        fish.setDate(data.getDate());
+        fish.setDate(data.getLocalDate());
 
         fish.setWeight(data.getWeight());
 
@@ -53,8 +53,6 @@ public class FishServiceImpl implements FishService {
         fish.setZone(data.getZone());
 
         fish.setName(data.getName());
-        
-        fish.setLocalDate(data.getLocalDate());
 
         return fish;
     }
