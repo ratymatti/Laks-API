@@ -120,6 +120,10 @@ public class CalculationUtils {
      */
 
     public static Map<String, Integer> calculateDailyCounts(List<Data> year) {
+        if (year == null) {
+            throw new IllegalArgumentException("Year cannot be null");
+        }
+
         Map<String, Integer> fishCounts = new TreeMap<>();
 
         for (Data fish : year) {
@@ -144,7 +148,7 @@ public class CalculationUtils {
         if (counts == null) {
             throw new IllegalArgumentException("Counts cannot be null");
         }
-        
+
         int length = counts.size();
 
         if (length == 0) {
