@@ -83,7 +83,10 @@ public class CalculationUtils {
         if (count < 0 || totalWeight < 0) {
             throw new IllegalArgumentException("Total count and total seasons must be non-negative.");
         }
-        return (count > 0) ? totalWeight / count : 0.0;
+        if ((count > 0 && totalWeight == 0) || (count == 0 && totalWeight > 0)) {
+            throw new IllegalStateException("Invalid combination of count and total weight.");
+        }
+        return (count > 0) ?  totalWeight / count : 0.0;
     }
 
     /**
@@ -95,10 +98,10 @@ public class CalculationUtils {
      */
 
     public static double calculateAverageAmount(int totalCount, int timePeriod) {
-        if (totalCount < 0 || timePeriod < 0) {
-            throw new IllegalArgumentException("Total count and total seasons must be non-negative.");
+        if (totalCount <= 0 || timePeriod <= 0) {
+            throw new IllegalArgumentException("Total count and total seasons must be greater than 0.");
         }
-        return (totalCount > 0) ? (double) totalCount / timePeriod : 0.0;
+        return (double) totalCount / timePeriod;
     }
 
     /**
@@ -138,6 +141,10 @@ public class CalculationUtils {
         } else {
             return counts.get(length / 2);
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(calculateAverageWeight(0, 10));
     }
 
 }
