@@ -19,6 +19,7 @@ import com.of.scraper.util.CalculationUtils;
 import com.of.scraper.util.FilteringUtils;
 import com.of.scraper.util.GroupingUtils;
 import com.of.scraper.util.TransformationUtils;
+import com.of.scraper.util.YearDTOUtils;
 
 import lombok.AllArgsConstructor;
 
@@ -125,7 +126,7 @@ public class DataProcessingService {
         List<YearDTO> result = new ArrayList<>();
 
         for (List<Data> year : fishesByYear.values()) {
-            YearDTO yearDTO = TransformationUtils.transformToYearDTO(year);
+            YearDTO yearDTO = YearDTOUtils.transformToYearDTO(year);
 
             result.add(CalculationUtils.roundYearDTOValues(yearDTO));
         }

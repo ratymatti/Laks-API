@@ -18,36 +18,6 @@ import com.of.scraper.entity.Data;
 public class TransformationUtils {
 
     /**
-     * Transforms a list of fish data into a YearDTO.
-     * 
-     * Counts and calculates total and average weights for "Laks" and "Sjøørret",
-     * and counts only total amount of "Pukkellaks".
-     * 
-     * @param fishes List of fish data for a specific year.
-     * @return YearDTO representing the aggregated fish data for that year.
-     */
-
-    public static YearDTO transformToYearDTO(List<Data> fishes) {
-        YearDTO yearDTO = new YearDTO(fishes.get(0).getLocalDate().getYear());
-
-        Map<String, Integer> countMap = new HashMap<>();
-        Map<String, Double> weightMap = new HashMap<>();
-
-        for (Data fish : fishes) {
-            String species = fish.getSpecies();
-            countMap.put(species, countMap.getOrDefault(species, 0) + 1);
-
-            if (!species.equals("Pukkellaks")) {
-                weightMap.put(species, weightMap.getOrDefault(species, 0.0) + fish.getWeight());
-            }
-        }
-        YearDTOUtils.handleSetCounts(yearDTO, countMap, weightMap);
-        YearDTOUtils.handleSetAverages(yearDTO);
-
-        return yearDTO;
-    }
-
-    /**
      * Converts a list of fish data into a DayDTO.
      * 
      * DayDTO encapsulates the date, count, total weight, and average weight of
