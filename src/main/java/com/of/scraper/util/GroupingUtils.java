@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 public class GroupingUtils {
 
@@ -21,8 +21,8 @@ public class GroupingUtils {
      *         data for that date.
      */
 
-    public static Map<String, List<Data>> groupByDayAndMonth(List<Data> fishData) {
-        Map<String, List<Data>> fishDataByDayAndMonth = new TreeMap<>();
+    public static Map<String, List<Fish>> groupByDayAndMonth(List<Fish> fishData) {
+        Map<String, List<Fish>> fishDataByDayAndMonth = new TreeMap<>();
 
         LocalDate seasonStart = LocalDate.of(2022, 6, 15);
         LocalDate seasonEnd = LocalDate.of(2022, 8, 31);
@@ -32,8 +32,8 @@ public class GroupingUtils {
             fishDataByDayAndMonth.put(dayAndMonth, new ArrayList<>());
         }
 
-        for (Data fish : fishData) {
-            String dayAndMonth = TransformationUtils.formatDateToMMddString(fish.getLocalDate());
+        for (Fish fish : fishData) {
+            String dayAndMonth = TransformationUtils.formatDateToMMddString(fish.getDate());
             fishDataByDayAndMonth.get(dayAndMonth).add(fish);
         }
 
@@ -48,11 +48,11 @@ public class GroupingUtils {
      *         caught in that year.
      */
 
-    public static Map<Integer, List<Data>> groupByYear(List<Data> fishData) {
-        Map<Integer, List<Data>> fishDataByYear = new TreeMap<>();
+    public static Map<Integer, List<Fish>> groupByYear(List<Fish> fishData) {
+        Map<Integer, List<Fish>> fishDataByYear = new TreeMap<>();
 
-        for (Data fish : fishData) {
-            int year = fish.getLocalDate().getYear();
+        for (Fish fish : fishData) {
+            int year = fish.getDate().getYear();
             fishDataByYear.computeIfAbsent(year, key -> new ArrayList<>()).add(fish);
         }
         return fishDataByYear;

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.YearDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 import com.of.scraper.testutils.TestDataUtil;
 
 
@@ -178,18 +178,18 @@ public class CalculationUtilsTest {
     @Test
     public void testCalculateDailyCounts() throws Exception {
         // Test with valid values
-        List<Data> testData1 = TestDataUtil.createTestData(2020, 1);
+        List<Fish> testData1 = TestDataUtil.createTestData(2020, 1);
         Map<String, Integer> result1 = CalculationUtils.calculateDailyCounts(testData1);
         assertEquals(30, result1.size());
         assertEquals(28, result1.get("07.28"));
 
         // Test with empty List
-        List<Data> testData2 = new ArrayList<>();
+        List<Fish> testData2 = new ArrayList<>();
         Map<String, Integer> result2 = CalculationUtils.calculateDailyCounts(testData2);
         assertTrue(result2.isEmpty());
 
         // Test with null List
-        List<Data> testData3 = null;
+        List<Fish> testData3 = null;
         assertThrows(IllegalArgumentException.class,
                 () -> CalculationUtils.calculateDailyCounts(testData3));
     }

@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.WeekDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 /**
  * Class TestDataUtil
@@ -34,14 +34,14 @@ public class TestDataUtil {
      *         fishes.
      */
 
-    public static List<Data> createDataListWithOffSeasonFishes() {
-        List<Data> fishData = new ArrayList<>();
+    public static List<Fish> createDataListWithOffSeasonFishes() {
+        List<Fish> fishData = new ArrayList<>();
 
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 6, 18)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 5, 19)));
-        fishData.add(new Data("Laks", 10.0, LocalDate.of(2022, 9, 20)));
+        fishData.add(new Fish("Laks", 10.0, LocalDate.of(2022, 6, 18)));
+        fishData.add(new Fish("Laks", 10.0, LocalDate.of(2022, 6, 18)));
+        fishData.add(new Fish("Laks", 10.0, LocalDate.of(2022, 6, 18)));
+        fishData.add(new Fish("Laks", 10.0, LocalDate.of(2022, 5, 19)));
+        fishData.add(new Fish("Laks", 10.0, LocalDate.of(2022, 9, 20)));
 
         return fishData;
     }
@@ -79,13 +79,13 @@ public class TestDataUtil {
         return weekDTO;
     }
 
-    public static List<Data> createTestData(int year, int numOfYears) {
-        List<Data> testData = new ArrayList<>();
+    public static List<Fish> createTestData(int year, int numOfYears) {
+        List<Fish> testData = new ArrayList<>();
 
         for (int i = 0; i < numOfYears; i++) {
             for (int j = 1; j <= 30; j++) {
                 for (int k = 0; k < j; k++) {
-                    testData.add(new Data("Laks", 10.0, LocalDate.of(year, 7, j)));
+                    testData.add(new Fish("Laks", 10.0, LocalDate.of(year, 7, j)));
                 }
             }
             year++;

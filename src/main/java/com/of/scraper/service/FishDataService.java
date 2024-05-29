@@ -8,12 +8,12 @@ import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
-public interface DataService {
-    List<Data> saveAll(List<Data> dataList);
-    List<Data> findAll();
-    List<Data> findByName(String name);
+public interface FishDataService {
+    List<Fish> saveAll(List<Fish> dataList);
+    List<Fish> findAll();
+    List<Fish> findByName(String name);
     AnglerDTO findByNameAndSpecies(String name, String species);
     Map<Integer, List<WeekDTO>> getBestWeeksYearly(String species);
     List<WeekDTO> getBestWeeksAlltime(String species);

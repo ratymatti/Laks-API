@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 
 import com.of.scraper.dto.YearDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 public class CalculationUtils {
 
@@ -119,17 +119,17 @@ public class CalculationUtils {
      *         from that date.
      */
 
-    public static Map<String, Integer> calculateDailyCounts(List<Data> year) {
+    public static Map<String, Integer> calculateDailyCounts(List<Fish> year) {
         if (year == null) {
             throw new IllegalArgumentException("Year cannot be null");
         }
 
         Map<String, Integer> fishCounts = new TreeMap<>();
 
-        for (Data fish : year) {
-            fishCounts.put(TransformationUtils.formatDateToMMddString(fish.getLocalDate()),
+        for (Fish fish : year) {
+            fishCounts.put(TransformationUtils.formatDateToMMddString(fish.getDate()),
                     fishCounts.getOrDefault(TransformationUtils
-                            .formatDateToMMddString(fish.getLocalDate()), 0) + 1);
+                            .formatDateToMMddString(fish.getDate()), 0) + 1);
         }
 
         return fishCounts;

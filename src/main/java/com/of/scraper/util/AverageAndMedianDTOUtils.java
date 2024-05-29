@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.of.scraper.dto.AverageAndMedianDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 public class AverageAndMedianDTOUtils {
     /**
@@ -42,14 +42,14 @@ public class AverageAndMedianDTOUtils {
      */
 
     public static Map<Integer, AverageAndMedianDTO> transformToAverageAndMedianDTOMap(
-            Map<Integer, List<Data>> fishesByYear) {
+            Map<Integer, List<Fish>> fishesByYear) {
         Map<Integer, AverageAndMedianDTO> fishCountAverageAndMedian = new TreeMap<>();
 
-        for (List<Data> year : fishesByYear.values()) {
+        for (List<Fish> year : fishesByYear.values()) {
             AverageAndMedianDTO averageAndMedian = transformToAverageAndMedianDTO(CalculationUtils
                     .calculateDailyCounts(year));
 
-            fishCountAverageAndMedian.put(year.get(0).getLocalDate().getYear(),
+            fishCountAverageAndMedian.put(year.get(0).getDate().getYear(),
                     averageAndMedian);
         }
 

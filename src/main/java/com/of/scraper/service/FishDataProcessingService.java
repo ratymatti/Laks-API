@@ -13,8 +13,8 @@ import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
-import com.of.scraper.entity.Data;
-import com.of.scraper.repository.DataRepository;
+import com.of.scraper.entity.Fish;
+import com.of.scraper.repository.FishRepository;
 import com.of.scraper.util.AverageAndMedianDTOUtils;
 import com.of.scraper.util.CalculationUtils;
 import com.of.scraper.util.DayDTOUtils;
@@ -28,9 +28,9 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class DataProcessingService {
+public class FishDataProcessingService {
 
-    private DataRepository dataRepository;
+    private FishRepository fishRepository;
 
     /**
      * Creates an AnglerStatsDTO for the given name and species.
@@ -41,9 +41,9 @@ public class DataProcessingService {
      */
 
     public AnglerStatsDTO createAnglerStatsDTO(String name, String species) {
-        int count = dataRepository
+        int count = fishRepository
                 .getCountByNameAndSpecies(name, species);
-        double totalWeight = dataRepository
+        double totalWeight = fishRepository
                 .getTotalWeightByNameAndSpecies(name, species);
         double averageWeight = CalculationUtils
                 .calculateAverageWeight(count, totalWeight);
@@ -65,21 +65,21 @@ public class DataProcessingService {
      *         seven day periods for that year.
      */
 
-    public Map<Integer, List<WeekDTO>> getBestWeeksByYear(List<Data> fishData) {
-        Map<Integer, List<Data>> fishDataByYear = GroupingUtils
+    public Map<Integer, List<WeekDTO>> getBestWeeksByYear(List<Fish> fishData) {
+        Map<Integer, List<Fish>> fishDataByYear = GroupingUtils
                 .groupByYear(FilteringUtils.filterOutOffSeasonFishes(fishData));
 
         Map<Integer, List<WeekDTO>> bestWeeksByYear = new TreeMap<>();
 
-        for (List<Data> fishesByYear : fishDataByYear.values()) {
-            Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils
+        for (List<Fish> fishesByYear : fishDataByYear.values()) {
+            Map<String, List<Fish>> fishDataByDayAndMonth = GroupingUtils
                     .groupByDayAndMonth(fishesByYear);
 
             List<DayDTO> fishDataInDayDTOList = DayDTOUtils
                     .transformToDayDTOList(fishDataByDayAndMonth);
 
             bestWeeksByYear.put(
-                    fishesByYear.get(0).getLocalDate().getYear(),
+                    fishesByYear.get(0).getDate().getYear(),
                     FilteringUtils.getBestWeeks(
                             WeekDTOUtils.transformToWeekDTOList(fishDataInDayDTOList)));
         }
@@ -91,13 +91,13 @@ public class DataProcessingService {
      * Calculates and returns the top three weeks with the highest fish count from
      * the provided fish data.
      * 
-     * @param fishData List of Data objects, each representing a single fish's data.
+     * @param fishData List of Fish objects, each representing a single fish's data.
      * @return List of the top three WeekDTOs, each representing a week's aggregated
      *         fish data.
      */
 
-    public List<WeekDTO> getBestWeeksAlltime(List<Data> fishData) {
-        Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils
+    public List<WeekDTO> getBestWeeksAlltime(List<Fish> fishData) {
+        Map<String, List<Fish>> fishDataByDayAndMonth = GroupingUtils
                 .groupByDayAndMonth(FilteringUtils
                         .filterOutOffSeasonFishes(fishData));
 
@@ -120,17 +120,17 @@ public class DataProcessingService {
      * The weights in the YearDTO are then rounded to one decimal place using the
      * roundYearDTOValues method. The rounded YearDTO is added to the result list.
      * 
-     * @param fishData List of Data objects, each representing a single fish's data.
+     * @param fishData List of Fish objects, each representing a single fish's data.
      * @return List of YearDTO objects, each representing a year's aggregated fish
      *         data.
      */
 
-    public List<YearDTO> getStatistics(List<Data> fishData) {
-        Map<Integer, List<Data>> fishesByYear = GroupingUtils.groupByYear(fishData);
+    public List<YearDTO> getStatistics(List<Fish> fishData) {
+        Map<Integer, List<Fish>> fishesByYear = GroupingUtils.groupByYear(fishData);
 
         List<YearDTO> result = new ArrayList<>();
 
-        for (List<Data> year : fishesByYear.values()) {
+        for (List<Fish> year : fishesByYear.values()) {
             YearDTO yearDTO = YearDTOUtils.transformToYearDTO(year);
 
             result.add(CalculationUtils.roundYearDTOValues(yearDTO));
@@ -146,7 +146,7 @@ public class DataProcessingService {
      * @return StatisticsDTO object representing all-time aggregated fish data.
      */
 
-    public StatisticsDTO getAlltimeStatistics(List<Data> fishData) {
+    public StatisticsDTO getAlltimeStatistics(List<Fish> fishData) {
         return StatisticsDTOUtils.transformToStatisticsDTO(getStatistics(fishData));
     }
 
@@ -159,8 +159,8 @@ public class DataProcessingService {
      * @return Map with AverageAndMedianDTO values
      */
 
-    public Map<Integer, AverageAndMedianDTO> getAverageAndMedianOfFishesPerDay(List<Data> fishData) {
-        Map<Integer, List<Data>> fishesByYear = GroupingUtils
+    public Map<Integer, AverageAndMedianDTO> getAverageAndMedianOfFishesPerDay(List<Fish> fishData) {
+        Map<Integer, List<Fish>> fishesByYear = GroupingUtils
                 .groupByYear(FilteringUtils
                         .filterOutOffSeasonFishes(fishData));
 

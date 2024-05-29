@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.of.scraper.dto.DayDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 public class DayDTOUtils {
 
@@ -22,11 +22,11 @@ public class DayDTOUtils {
      * @return DayDTO representing the aggregated fishing data for the day.
      */
 
-    public static DayDTO transformToDayDTO(List<Data> fishData, String date) {
+    public static DayDTO transformToDayDTO(List<Fish> fishData, String date) {
         if (fishData.size() > 0) {
             int count = fishData.size();
             double totalWeight = CalculationUtils
-                    .calculateTotalWeight(fishData, Data::getWeight);
+                    .calculateTotalWeight(fishData, Fish::getWeight);
             double averageWeight = CalculationUtils
                     .calculateAverageWeight(count, totalWeight);
 
@@ -48,7 +48,7 @@ public class DayDTOUtils {
      * @return List of DayDTOs, each representing fish data for a specific date.
      */
 
-    public static List<DayDTO> transformToDayDTOList(Map<String, List<Data>> fishDataByDayAndMonth) {
+    public static List<DayDTO> transformToDayDTOList(Map<String, List<Fish>> fishDataByDayAndMonth) {
         List<DayDTO> fishDataInDayDTOList = new ArrayList<>();
 
         for (String date : fishDataByDayAndMonth.keySet()) {

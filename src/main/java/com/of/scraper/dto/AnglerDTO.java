@@ -2,7 +2,7 @@ package com.of.scraper.dto;
 
 import java.util.List;
 
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ import lombok.Setter;
  * The class has the following fields:
  * @name: String - the name of the angler.
  * @anglerStats: AnglerStatsDTO - a reference to an AnglerStatsDTO object that holds statistical information about the angler.
- * @data: List<Data> - a list of Data objects associated with the angler.
+ * @data: List<Fish> - a list of Fish objects associated with the angler.
  */
 
 @Embeddable
@@ -35,5 +35,5 @@ public class AnglerDTO {
 
     private String name;
     private AnglerStatsDTO anglerStats;
-    private List<Data> data;
+    private List<Fish> data;
 }

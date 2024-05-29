@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.of.scraper.dto.WeekDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 import com.of.scraper.testutils.TestDataUtil;
 
 import org.junit.jupiter.api.Test;
@@ -19,10 +19,10 @@ public class FilteringUtilsTest {
     @Test
     public void testFilterOutOffSeasonFishes() {
         // Create List<Data> with test data
-        List<Data> testData = TestDataUtil.createDataListWithOffSeasonFishes();
+        List<Fish> testData = TestDataUtil.createDataListWithOffSeasonFishes();
         
         // Call the method under test
-        List<Data> result = FilteringUtils.filterOutOffSeasonFishes(testData);
+        List<Fish> result = FilteringUtils.filterOutOffSeasonFishes(testData);
 
         // Check that the method returns the correct number of elements
         assertEquals(3, result.size());

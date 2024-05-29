@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.of.scraper.dto.YearDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 public class YearDTOUtils {
 
@@ -19,13 +19,13 @@ public class YearDTOUtils {
      * @return YearDTO representing the aggregated fish data for that year.
      */
 
-    public static YearDTO transformToYearDTO(List<Data> fishes) {
-        YearDTO yearDTO = new YearDTO(fishes.get(0).getLocalDate().getYear());
+    public static YearDTO transformToYearDTO(List<Fish> fishes) {
+        YearDTO yearDTO = new YearDTO(fishes.get(0).getDate().getYear());
 
         Map<String, Integer> countMap = new HashMap<>();
         Map<String, Double> weightMap = new HashMap<>();
 
-        for (Data fish : fishes) {
+        for (Fish fish : fishes) {
             String species = fish.getSpecies();
             countMap.put(species, countMap.getOrDefault(species, 0) + 1);
 

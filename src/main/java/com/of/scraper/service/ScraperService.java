@@ -2,6 +2,7 @@ package com.of.scraper.service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 import lombok.AllArgsConstructor;
 
@@ -24,7 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ScraperService {
 
-    DataService dataService;
+    FishDataService dataService;
 
     /**
      * Scrapes data from scanatura.no catch reports page and stores it in a list
@@ -39,9 +40,9 @@ public class ScraperService {
      * @return A list of Data objects containing the scraped data.
      */
 
-    public List<Data> scrapeData() {
+    public List<Fish> scrapeData() {
         // Initialize a list to store the scraped data
-        List<Data> dataList = new ArrayList<>();
+        List<Fish> dataList = new ArrayList<>();
 
         // Initialize the WebDriver
         WebDriver driver = initializeWebDriver();
@@ -108,7 +109,7 @@ public class ScraperService {
                     List<WebElement> rows = table.findElements(By.tagName("tr"));
 
                     // Initialize a list to store the data for the week
-                    List<Data> weekData = new ArrayList<>();
+                    List<Fish> weekData = new ArrayList<>();
 
                     // Iterate over the rows starting from the second row
                     // Ignore first row since its the header
@@ -121,7 +122,7 @@ public class ScraperService {
 
                         // Create a Data object from the cells
                         // and add it to the weekData list
-                        Data data = createData(cells);
+                        Fish data = createData(cells);
                         weekData.add(data);
                     }
                     // Save the weekData list to the database
@@ -186,13 +187,13 @@ public class ScraperService {
         return currentYear;
     }
 
-    private Data createData(List<WebElement> cells) {
-        Data data = new Data();
+    private Fish createData(List<WebElement> cells) {
+        Fish data = new Fish();
 
         data.setLocation("Beiarelva");
 
         String date = cells.get(0).getText();
-        data.setDate((date != null && !date.isEmpty()) ? date : "N/A");
+        data.setDate(transformToLocalDate(date));
 
         String input = cells.get(1).getText();
         double weight = Double.parseDouble(input.replace(",", "."));
@@ -211,5 +212,16 @@ public class ScraperService {
         data.setName((name != null && !name.isEmpty()) ? name : "N/A");
 
         return data;
+    }
+
+    private LocalDate transformToLocalDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate localDate;
+        if (date != null && !date.isEmpty()) {
+            localDate = LocalDate.parse(date, formatter);
+        } else {
+            localDate = LocalDate.of(1900, 01, 01); // default date
+        }
+        return localDate;
     }
 }

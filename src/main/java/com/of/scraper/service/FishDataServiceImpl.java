@@ -12,17 +12,17 @@ import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
-import com.of.scraper.entity.Data;
-import com.of.scraper.repository.DataRepository;
+import com.of.scraper.entity.Fish;
+import com.of.scraper.repository.FishRepository;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class DataServiceImpl implements DataService {
+public class FishDataServiceImpl implements FishDataService {
 
-    private DataRepository dataRepository;
-    private DataProcessingService dataProcessingService;
+    private FishRepository fishRepository;
+    private FishDataProcessingService fishDataProcessingService;
 
     private final String[] SPECIES = { "Laks", "Sjøørret", "Pukkellaks" };
 
@@ -34,8 +34,8 @@ public class DataServiceImpl implements DataService {
      */
 
     @Override
-    public List<Data> saveAll(List<Data> dataList) {
-        return dataRepository.saveAll(dataList);
+    public List<Fish> saveAll(List<Fish> dataList) {
+        return fishRepository.saveAll(dataList);
     }
 
     /**
@@ -45,8 +45,8 @@ public class DataServiceImpl implements DataService {
      */
 
     @Override
-    public List<Data> findAll() {
-        return dataRepository.findAll(Sort.by("localDate"));
+    public List<Fish> findAll() {
+        return fishRepository.findAll(Sort.by("date"));
     }
 
     /**
@@ -56,8 +56,8 @@ public class DataServiceImpl implements DataService {
      */
 
     @Override
-    public List<Data> findByName(String name) {
-        return dataRepository.findByName(name);
+    public List<Fish> findByName(String name) {
+        return fishRepository.findByName(name);
     }
 
     /**
@@ -71,9 +71,9 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public AnglerDTO findByNameAndSpecies(String name, String species) {
-        AnglerStatsDTO anglerStats = dataProcessingService
+        AnglerStatsDTO anglerStats = fishDataProcessingService
                 .createAnglerStatsDTO(name, species);
-        List<Data> dataList = dataRepository
+        List<Fish> dataList = fishRepository
                 .findByNameAndSpecies(name, species);
 
         return new AnglerDTO(name, anglerStats, dataList);
@@ -90,9 +90,9 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public Map<Integer, List<WeekDTO>> getBestWeeksYearly(String species) {
-        List<Data> fishesBySpecies = dataRepository
-                .findBySpecies(species, Sort.by("localDate"));
-        return dataProcessingService.getBestWeeksByYear(fishesBySpecies);
+        List<Fish> fishesBySpecies = fishRepository
+                .findBySpecies(species, Sort.by("date"));
+        return fishDataProcessingService.getBestWeeksByYear(fishesBySpecies);
     }
 
     /**
@@ -105,9 +105,9 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public List<WeekDTO> getBestWeeksAlltime(String species) {
-        List<Data> fishesBySpecies = dataRepository
-                .findBySpecies(species, Sort.by("localDate"));
-        return dataProcessingService.getBestWeeksAlltime(fishesBySpecies);
+        List<Fish> fishesBySpecies = fishRepository
+                .findBySpecies(species, Sort.by("date"));
+        return fishDataProcessingService.getBestWeeksAlltime(fishesBySpecies);
     }
 
     /**
@@ -123,9 +123,9 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public List<WeekDTO> getBestBigFishWeeksAlltime(String species, double weight) {
-        List<Data> bigFishData = dataRepository
+        List<Fish> bigFishData = fishRepository
                 .findBySpeciesAndMinWeight(species, weight);
-        return dataProcessingService.getBestWeeksAlltime(bigFishData);
+        return fishDataProcessingService.getBestWeeksAlltime(bigFishData);
     }
 
     /**
@@ -143,9 +143,9 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public Map<Integer, List<WeekDTO>> getBestBigFishWeeksYearly(String species, double weight) {
-        List<Data> bigFishData = dataRepository
+        List<Fish> bigFishData = fishRepository
                 .findBySpeciesAndMinWeight(species, weight);
-        return dataProcessingService.getBestWeeksByYear(bigFishData);
+        return fishDataProcessingService.getBestWeeksByYear(bigFishData);
     }
 
     /**
@@ -157,9 +157,9 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public List<YearDTO> getAnnualStatistics() {
-        List<Data> fishes = dataRepository
+        List<Fish> fishes = fishRepository
                 .findAllByMultipleSpecies(SPECIES);
-        return dataProcessingService.getStatistics(fishes);
+        return fishDataProcessingService.getStatistics(fishes);
     }
 
     /**
@@ -170,15 +170,15 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public StatisticsDTO getAlltimeStatistics() {
-        List<Data> fishes = dataRepository
+        List<Fish> fishes = fishRepository
                 .findAllByMultipleSpecies(SPECIES);
-        return dataProcessingService.getAlltimeStatistics(fishes);
+        return fishDataProcessingService.getAlltimeStatistics(fishes);
     }
 
     @Override
     public Map<Integer, AverageAndMedianDTO> getAverageAndMedian() {
-        List<Data> fishes = dataRepository.findBySpecies("Laks", Sort.by("localDate"));
-        return dataProcessingService.getAverageAndMedianOfFishesPerDay(fishes);
+        List<Fish> fishes = fishRepository.findBySpecies("Laks", Sort.by("date"));
+        return fishDataProcessingService.getAverageAndMedianOfFishesPerDay(fishes);
     }
 
 }

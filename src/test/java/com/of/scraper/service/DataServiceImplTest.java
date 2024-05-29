@@ -7,8 +7,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.of.scraper.dto.AnglerDTO;
 import com.of.scraper.dto.AnglerStatsDTO;
-import com.of.scraper.entity.Data;
-import com.of.scraper.repository.DataRepository;
+import com.of.scraper.entity.Fish;
+import com.of.scraper.repository.FishRepository;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -24,29 +24,29 @@ import static org.mockito.Mockito.when;
 public class DataServiceImplTest {
 
     @Mock
-    private DataRepository dataRepository;
+    private FishRepository fishRepository;
 
     @Mock
-    private DataProcessingService dataProcessingService;
+    private FishDataProcessingService fishDataProcessingService;
 
     @InjectMocks
-    private DataServiceImpl dataService;
+    private FishDataServiceImpl fishDataService;
 
     @Test
     public void testFindByNameAndSpecies() {
         // Arrange
         String expectedName = "John";
         String species = "Laks";
-        Data mockData = new Data();
-        List<Data> mockDataList = Arrays.asList(mockData);
+        Fish mockData = new Fish();
+        List<Fish> mockDataList = Arrays.asList(mockData);
         AnglerStatsDTO mockAnglerStats = new AnglerStatsDTO();
         mockAnglerStats.setName(expectedName);
 
-        when(dataProcessingService.createAnglerStatsDTO(anyString(), anyString())).thenReturn(mockAnglerStats);
-        when(dataRepository.findByNameAndSpecies(anyString(), anyString())).thenReturn(mockDataList);
+        when(fishDataProcessingService.createAnglerStatsDTO(anyString(), anyString())).thenReturn(mockAnglerStats);
+        when(fishRepository.findByNameAndSpecies(anyString(), anyString())).thenReturn(mockDataList);
 
         // Act
-        AnglerDTO result = dataService.findByNameAndSpecies(expectedName, species);
+        AnglerDTO result = fishDataService.findByNameAndSpecies(expectedName, species);
         AnglerStatsDTO anglerStats = result.getAnglerStats();
 
         // Assert
@@ -55,7 +55,7 @@ public class DataServiceImplTest {
         assertEquals(mockDataList, result.getData());
         assertEquals(expectedName, anglerStats.getName());
 
-        verify(dataRepository).findByNameAndSpecies(expectedName, species);
+        verify(fishRepository).findByNameAndSpecies(expectedName, species);
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.of.scraper.dto.WeekDTO;
-import com.of.scraper.entity.Data;
+import com.of.scraper.entity.Fish;
 
 public class FilteringUtils {
     
@@ -18,11 +18,11 @@ public class FilteringUtils {
      * @return A list of fish data that were caught in season.
      */
 
-    public static List<Data> filterOutOffSeasonFishes(List<Data> fishData) {
+    public static List<Fish> filterOutOffSeasonFishes(List<Fish> fishData) {
         return fishData.stream()
                 .filter(fish -> {
-                    int month = fish.getLocalDate().getMonthValue();
-                    int day = fish.getLocalDate().getDayOfMonth();
+                    int month = fish.getDate().getMonthValue();
+                    int day = fish.getDate().getDayOfMonth();
                     return (month > 6 || (month == 6 && day >= 15)) && (month < 8 || (month == 8 && day <= 31));
                 })
                 .collect(Collectors.toList());

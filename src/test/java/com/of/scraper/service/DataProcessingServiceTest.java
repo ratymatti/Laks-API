@@ -16,18 +16,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.of.scraper.dto.AnglerStatsDTO;
 import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.WeekDTO;
-import com.of.scraper.entity.Data;
-import com.of.scraper.repository.DataRepository;
+import com.of.scraper.entity.Fish;
+import com.of.scraper.repository.FishRepository;
 import com.of.scraper.testutils.TestDataUtil;
 
 @ExtendWith(MockitoExtension.class)
 public class DataProcessingServiceTest {
 
     @Mock
-    private DataRepository dataRepository;
+    private FishRepository fishRepository;
 
     @InjectMocks
-    private DataProcessingService dataProcessingService;
+    private FishDataProcessingService dataProcessingService;
 
     @Test
     public void testCreateAnglerStatsDTO() {
@@ -38,8 +38,8 @@ public class DataProcessingServiceTest {
         double expectedTotalWeight = 20.0;
         double expectedAverageWeight = 10.0;
 
-        when(dataRepository.getCountByNameAndSpecies(testName, testSpecies)).thenReturn(expectedCount);
-        when(dataRepository.getTotalWeightByNameAndSpecies(testName, testSpecies)).thenReturn(expectedTotalWeight);
+        when(fishRepository.getCountByNameAndSpecies(testName, testSpecies)).thenReturn(expectedCount);
+        when(fishRepository.getTotalWeightByNameAndSpecies(testName, testSpecies)).thenReturn(expectedTotalWeight);
 
         // Act
         AnglerStatsDTO result = dataProcessingService.createAnglerStatsDTO(testName, testSpecies);
@@ -50,14 +50,14 @@ public class DataProcessingServiceTest {
         assertEquals(expectedTotalWeight, result.getTotalWeight());
         assertEquals(expectedAverageWeight, result.getAverageWeight());
 
-        verify(dataRepository).getCountByNameAndSpecies(testName, testSpecies);
-        verify(dataRepository).getTotalWeightByNameAndSpecies(testName, testSpecies);
+        verify(fishRepository).getCountByNameAndSpecies(testName, testSpecies);
+        verify(fishRepository).getTotalWeightByNameAndSpecies(testName, testSpecies);
     }
 
     @Test
     public void testGetBestWeeksByYear() {
         // Arrange
-        List<Data> fishData = TestDataUtil.createTestData(2020, 2);
+        List<Fish> fishData = TestDataUtil.createTestData(2020, 2);
 
         // Act
         Map<Integer, List<WeekDTO>> result = dataProcessingService.getBestWeeksByYear(fishData);
@@ -78,7 +78,7 @@ public class DataProcessingServiceTest {
     @Test
     public void testGetBestWeeksAlltime() {
         // Arrange
-        List<Data> fishData = TestDataUtil.createTestData(2020, 2);
+        List<Fish> fishData = TestDataUtil.createTestData(2020, 2);
 
         // Act
         List<WeekDTO> result = dataProcessingService.getBestWeeksAlltime(fishData);
@@ -94,8 +94,8 @@ public class DataProcessingServiceTest {
     @Test
     public void testGetAverageAndMedianOfFishesPerDay() {
         // Arrange
-        List<Data> testData1 = TestDataUtil.createTestData(2020, 1);
-        List<Data> testData2 = TestDataUtil.createTestData(2020, 1);
+        List<Fish> testData1 = TestDataUtil.createTestData(2020, 1);
+        List<Fish> testData2 = TestDataUtil.createTestData(2020, 1);
         testData2.remove(0);
 
         // Act
