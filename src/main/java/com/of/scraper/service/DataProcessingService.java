@@ -20,6 +20,7 @@ import com.of.scraper.util.DayDTOUtils;
 import com.of.scraper.util.FilteringUtils;
 import com.of.scraper.util.GroupingUtils;
 import com.of.scraper.util.TransformationUtils;
+import com.of.scraper.util.WeekDTOUtils;
 import com.of.scraper.util.YearDTOUtils;
 
 import lombok.AllArgsConstructor;
@@ -79,7 +80,7 @@ public class DataProcessingService {
             bestWeeksByYear.put(
                     fishesByYear.get(0).getLocalDate().getYear(),
                     FilteringUtils.getBestWeeks(
-                            TransformationUtils.transformToWeekDTOList(fishDataInDayDTOList)));
+                            WeekDTOUtils.transformToWeekDTOList(fishDataInDayDTOList)));
         }
 
         return bestWeeksByYear;
@@ -96,13 +97,15 @@ public class DataProcessingService {
 
     public List<WeekDTO> getBestWeeksAlltime(List<Data> fishData) {
         Map<String, List<Data>> fishDataByDayAndMonth = GroupingUtils
-                .groupByDayAndMonth(FilteringUtils.filterOutOffSeasonFishes(fishData));
+                .groupByDayAndMonth(FilteringUtils
+                        .filterOutOffSeasonFishes(fishData));
 
         List<DayDTO> fishDataInDayDTOList = DayDTOUtils
                 .transformToDayDTOList(fishDataByDayAndMonth);
 
         return FilteringUtils
-                .getBestWeeks(TransformationUtils.transformToWeekDTOList(fishDataInDayDTOList));
+                .getBestWeeks(WeekDTOUtils
+                        .transformToWeekDTOList(fishDataInDayDTOList));
     }
 
     /**
@@ -147,9 +150,10 @@ public class DataProcessingService {
     }
 
     /**
-     * Calculates and returns all-time in-season salmon fishing statistics as Map where
+     * Calculates and returns all-time in-season salmon fishing statistics as Map
+     * where
      * key represents year and values are AverateAndMedianDTO from that year.
-     *  
+     * 
      * @param fishData List of all salmons caught
      * @return Map with AverageAndMedianDTO values
      */
