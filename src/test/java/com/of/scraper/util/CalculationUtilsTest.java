@@ -1,9 +1,12 @@
 package com.of.scraper.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.YearDTO;
+import com.of.scraper.entity.Data;
 import com.of.scraper.testutils.TestDataUtil;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,7 +68,7 @@ public class CalculationUtilsTest {
     }
 
     @Test
-    public void testCalculateAverageWeight() {
+    public void testCalculateAverageWeight() throws Exception {
         // Test with normal values
         int testCount1 = 10;
         double testTotalWeight1 = 100.0;
@@ -75,15 +79,12 @@ public class CalculationUtilsTest {
         // Test with count as zero
         int testCount2 = 0;
         double testTotalWeight2 = 100.0;
-        double result2 = CalculationUtils.calculateAverageWeight(testCount2, testTotalWeight2);
-        assertEquals(0.0, result2);
+        assertThrows(IllegalStateException.class, () -> CalculationUtils.calculateAverageWeight(testCount2, testTotalWeight2));
 
         // Test with total weight as zero
         int testCount3 = 10;
         double testTotalWeight3 = 0.0;
-        double expectedAverageWeight3 = 0.0;
-        double result3 = CalculationUtils.calculateAverageWeight(testCount3, testTotalWeight3);
-        assertEquals(expectedAverageWeight3, result3);
+        assertThrows(IllegalStateException.class, () -> CalculationUtils.calculateAverageWeight(testCount3, testTotalWeight3));
 
         // Test with both count and total weight as zero
         int testCount4 = 0;
@@ -94,10 +95,11 @@ public class CalculationUtilsTest {
     }
 
     @Test
-    public void testCalculateTotalWeight() {
+    public void testCalculateTotalWeight() throws Exception {
         // Create a list of DayDTOs with some test values
         List<DayDTO> testData1 = TestDataUtil.createDayDTOtestDataList();
         List<DayDTO> testData2 = new ArrayList<>();
+        List<DayDTO> testData3 = null;
 
         // Call the method under test
         double result1 = CalculationUtils.calculateTotalWeight(testData1, DayDTO::getTotalWeight);
@@ -105,14 +107,17 @@ public class CalculationUtilsTest {
 
         // Check that the total weight has been calculated correctly
         assertEquals(600.0, result1);
+        assertThrows(NullPointerException.class, () -> CalculationUtils.calculateTotalWeight(testData1, null));
         assertEquals(0.0, result2);
+        assertThrows(NullPointerException.class, () -> CalculationUtils.calculateTotalWeight(testData3, DayDTO::getTotalWeight));   
     }
 
     @Test
-    public void testCalculateCount() {
+    public void testCalculateCount() throws Exception {
         // Create a list of DayDTOs with some test values
         List<DayDTO> testData1 = TestDataUtil.createDayDTOtestDataList();
         List<DayDTO> testData2 = new ArrayList<>();
+        List<DayDTO> testData3 = null;
 
         // Call the method under test
         int result1 = CalculationUtils.calculateCount(testData1, DayDTO::getFishCount);
@@ -120,7 +125,32 @@ public class CalculationUtilsTest {
 
         // Check that the count has been calculated correctly
         assertEquals(60, result1);
+        assertThrows(NullPointerException.class, () -> CalculationUtils.calculateCount(testData1, null));
         assertEquals(0, result2);
+        assertThrows(NullPointerException.class, () -> CalculationUtils.calculateCount(testData3, DayDTO::getFishCount));
+    }
+
+    @Test
+    public void testCalculateDailyCounts() throws Exception {
+        // Arrange
+        List<Data> testData1 = TestDataUtil.createTestData(2020, 1);
+        List<Data> testData2 = new ArrayList<>();
+        List<Data> testData3 = null;
+
+        // Act
+        Map<String, Integer> result1 = CalculationUtils.calculateDailyCounts(testData1);
+        Map<String, Integer> result2 = CalculationUtils.calculateDailyCounts(testData2);
+
+        // Assert
+        assertEquals(30, result1.size());
+        assertEquals(28, result1.get("07.28"));
+        assertTrue(result2.isEmpty());
+        assertThrows(NullPointerException.class, () -> CalculationUtils.calculateDailyCounts(testData3));
+    }
+
+    @Test
+    public void testCalculateAverageAmount() {
+        
     }
 
 }
