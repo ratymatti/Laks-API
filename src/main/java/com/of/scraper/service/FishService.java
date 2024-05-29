@@ -4,5 +4,5 @@ import com.of.scraper.entity.Fish;
 
 public interface FishService {
     Fish save(Fish fish);
-    void convertDataToFish();
+    String convertDataToFish();
 }

@@ -24,12 +24,17 @@ public class FishServiceImpl implements FishService {
     }
 
     @Override
-    public void convertDataToFish() {
+    public String convertDataToFish() {
         List<Data> fishesAsData = dataRepository.findAll();
+
+        int count  = 0;
 
         for (Data data : fishesAsData) {
             fishRepository.save(convertDataEntityToFishEntity(data));
+            count++;
         }
+
+        return "Converted " + count + " entities succesfully.";
     }
 
     private Fish convertDataEntityToFishEntity(Data data) {
