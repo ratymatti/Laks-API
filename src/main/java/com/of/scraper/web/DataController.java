@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.service.DataService;
+import com.of.scraper.service.FishService;
 import com.of.scraper.service.ScraperService;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ public class DataController {
 
     DataService dataService;
     ScraperService scraperService;
+    FishService fishService;
 
     @GetMapping("/scrapeAndSave")
     public void scrapeAndSave() {
@@ -92,5 +95,11 @@ public class DataController {
     public ResponseEntity<Map<Integer, AverageAndMedianDTO>> getAverageAndMedian() {
         Map<Integer, AverageAndMedianDTO> data = dataService.getAverageAndMedian();
         return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @PostMapping("/convertDataToFish")
+    public ResponseEntity<HttpStatus> convertDataToFish() {
+        fishService.convertDataToFish();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
