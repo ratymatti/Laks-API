@@ -10,15 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.testutils.TestDataUtil;
 
-@ExtendWith(MockitoExtension.class)
+
 public class CalculationUtilsTest {
 
     private static final int VALID_INT = 10;
