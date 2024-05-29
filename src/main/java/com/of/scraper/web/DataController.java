@@ -96,10 +96,4 @@ public class DataController {
         Map<Integer, AverageAndMedianDTO> data = dataService.getAverageAndMedian();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
-
-    @PostMapping("/convertDataToFish")
-    public ResponseEntity<String> convertDataToFish() {
-        String response = fishService.convertDataToFish();
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 }
