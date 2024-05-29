@@ -98,8 +98,8 @@ public class DataController {
     }
 
     @PostMapping("/convertDataToFish")
-    public ResponseEntity<HttpStatus> convertDataToFish() {
-        fishService.convertDataToFish();
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> convertDataToFish() {
+        String response = fishService.convertDataToFish();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
