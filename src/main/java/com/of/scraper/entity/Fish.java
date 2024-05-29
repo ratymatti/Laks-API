@@ -1,13 +1,11 @@
 package com.of.scraper.entity;
 
 import java.time.LocalDate;
-import java.util.UUID;
-
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -43,40 +41,33 @@ import lombok.Setter;
 public class Fish {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-        )
-        private UUID id;
-        
-        @Column(name = "location")
-        private String location;
-        
-        @Column(name = "date")
-        private String date;
-        
-        @Column(name = "weight")
-        private double weight;
-        
-        @Column(name = "species")
-        private String species;
-        
-        @Column(name = "gear")
-        private String gear;
-        
-        @Column(name = "zone")
-        private String zone;
-        
-        @Column(name = "name")
-        private String name;
-        
-        @Column(name = "local_date")
-        private LocalDate localDate;
-        
-        public Fish(String species, double weight, LocalDate localDate) {
-            this.species = species;
-            this.weight = weight;
-            this.localDate = localDate;
-        }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "weight")
+    private double weight;
+
+    @Column(name = "species")
+    private String species;
+
+    @Column(name = "gear")
+    private String gear;
+
+    @Column(name = "zone")
+    private String zone;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "date")
+    private LocalDate date;
+
+    public Fish(String species, double weight, LocalDate date) {
+        this.species = species;
+        this.weight = weight;
+        this.date = date;
+    }
 }
