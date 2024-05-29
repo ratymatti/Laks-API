@@ -149,8 +149,30 @@ public class CalculationUtilsTest {
     }
 
     @Test
-    public void testCalculateAverageAmount() {
-        
+    public void testCalculateAverageAmount() throws Exception {
+        // Test with normal values
+        int testCount1 = 10;
+        int testTimePeriod1 = 5;
+        double expectedAverageAmount1 = 2.0;
+        double result1 = CalculationUtils.calculateAverageAmount(testCount1, testTimePeriod1);
+        assertEquals(expectedAverageAmount1, result1);
+
+        // Test with count as zero
+        int testCount2 = 0;
+        int testTimePeriod2 = 5;
+        assertThrows(IllegalStateException.class, () -> CalculationUtils.calculateAverageAmount(testCount2, testTimePeriod2));
+
+        // Test with time period as zero
+        int testCount3 = 10;
+        int testTimePeriod3 = 0;
+        assertThrows(IllegalStateException.class, () -> CalculationUtils.calculateAverageAmount(testCount3, testTimePeriod3));
+
+        // Test with both count and time period as zero
+        int testCount4 = 0;
+        int testTimePeriod4 = 0;
+        double expectedAverageAmount4 = 0.0;
+        double result4 = CalculationUtils.calculateAverageAmount(testCount4, testTimePeriod4);
+        assertEquals(expectedAverageAmount4, result4);    
     }
 
 }
