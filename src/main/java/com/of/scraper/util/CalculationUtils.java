@@ -40,7 +40,7 @@ public class CalculationUtils {
         if (value < 0) {
             throw new IllegalArgumentException("Value cannot be negative");
         }
-        
+
         final int NUM_OF_DECIMALS = 2;
         return Math.round(
                 value * Math.pow(10, NUM_OF_DECIMALS)) / Math.pow(10, NUM_OF_DECIMALS);
@@ -132,16 +132,26 @@ public class CalculationUtils {
     }
 
     /**
-     * Calculates median amount from List of Integers, first it sorts
-     * the list and then returns median calculated from it.
+     * Calculates median amount from List of Integers. If length is 0 returns 0.0.
+     * If length is even, returns average of two middle values. If length is odd,
+     * returns middle value. 
      * 
      * @param counts List of integers
-     * @return double median calculated from List counts
+     * @return median calculated from List counts as double
      */
 
     public static double calculateMedianAmount(List<Integer> counts) {
-        counts.sort(Integer::compareTo);
+        if (counts == null) {
+            throw new IllegalArgumentException("Counts cannot be null");
+        }
+        
         int length = counts.size();
+
+        if (length == 0) {
+            return 0.0;
+        }
+
+        counts.sort(Integer::compareTo);
 
         if (length % 2 == 0) {
             return ((double) counts.get(length / 2) + counts.get(length / 2 - 1)) / 2;
