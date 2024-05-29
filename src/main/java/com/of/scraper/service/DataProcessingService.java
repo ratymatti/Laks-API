@@ -15,12 +15,12 @@ import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Data;
 import com.of.scraper.repository.DataRepository;
+import com.of.scraper.util.AverageAndMedianDTOUtils;
 import com.of.scraper.util.CalculationUtils;
 import com.of.scraper.util.DayDTOUtils;
 import com.of.scraper.util.FilteringUtils;
 import com.of.scraper.util.GroupingUtils;
 import com.of.scraper.util.StatisticsDTOUtils;
-import com.of.scraper.util.TransformationUtils;
 import com.of.scraper.util.WeekDTOUtils;
 import com.of.scraper.util.YearDTOUtils;
 
@@ -164,6 +164,6 @@ public class DataProcessingService {
                 .groupByYear(FilteringUtils
                         .filterOutOffSeasonFishes(fishData));
 
-        return TransformationUtils.transformToAverageAndMedianDTOMap(fishesByYear);
+        return AverageAndMedianDTOUtils.transformToAverageAndMedianDTOMap(fishesByYear);
     }
 }
