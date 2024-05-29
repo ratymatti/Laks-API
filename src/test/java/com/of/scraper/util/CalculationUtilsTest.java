@@ -72,37 +72,6 @@ public class CalculationUtilsTest {
     }
 
     @Test
-    public void testCalculateAverageWeight() throws Exception {
-        // Test with normal values
-        double testTotalWeight1 = 100.0;
-        double expectedAverageWeight1 = 10.0;
-        double result1 = CalculationUtils.calculateAverageWeight(VALID_INT, testTotalWeight1);
-        assertEquals(expectedAverageWeight1, result1);
-
-        // Test with count as zero
-        int testCount2 = 0;
-        double testTotalWeight2 = 100.0;
-        assertThrows(IllegalStateException.class,
-                () -> CalculationUtils.calculateAverageWeight(testCount2, testTotalWeight2));
-
-        // Test with total weight as zero
-        assertThrows(IllegalStateException.class,
-                () -> CalculationUtils.calculateAverageWeight(VALID_INT, ZERO_DOUBLE));
-
-        // Test with both count and total weight as zero
-        double result4 = CalculationUtils.calculateAverageWeight(ZERO_INT, ZERO_DOUBLE);
-        assertEquals(ZERO_DOUBLE, result4);
-
-        // Test with negative count
-        assertThrows(IllegalArgumentException.class,
-                () -> CalculationUtils.calculateAverageWeight(INVALID_INT, VALID_INT));
-
-        // Test with negative total weight
-        assertThrows(IllegalArgumentException.class,
-                () -> CalculationUtils.calculateAverageWeight(VALID_INT, INVALID_DOUBLE));
-    }
-
-    @Test
     public void testCalculateTotalWeight() throws Exception {
         // Test with valid values
         List<DayDTO> testData1 = TestDataUtil.createDayDTOtestDataList();
@@ -147,21 +116,34 @@ public class CalculationUtilsTest {
     }
 
     @Test
-    public void testCalculateDailyCounts() throws Exception {
-        // Test with valid values
-        List<Data> testData1 = TestDataUtil.createTestData(2020, 1);
-        Map<String, Integer> result1 = CalculationUtils.calculateDailyCounts(testData1);
-        assertEquals(30, result1.size());
-        assertEquals(28, result1.get("07.28"));
+    public void testCalculateAverageWeight() throws Exception {
+        // Test with normal values
+        double testTotalWeight1 = 100.0;
+        double expectedAverageWeight1 = 10.0;
+        double result1 = CalculationUtils.calculateAverageWeight(VALID_INT, testTotalWeight1);
+        assertEquals(expectedAverageWeight1, result1);
 
-        // Test with empty List
-        List<Data> testData2 = new ArrayList<>();
-        Map<String, Integer> result2 = CalculationUtils.calculateDailyCounts(testData2);
-        assertTrue(result2.isEmpty());
+        // Test with count as zero
+        int testCount2 = 0;
+        double testTotalWeight2 = 100.0;
+        assertThrows(IllegalStateException.class,
+                () -> CalculationUtils.calculateAverageWeight(testCount2, testTotalWeight2));
 
-        // Test with null List
-        List<Data> testData3 = null;
-        assertThrows(NullPointerException.class, () -> CalculationUtils.calculateDailyCounts(testData3));
+        // Test with total weight as zero
+        assertThrows(IllegalStateException.class,
+                () -> CalculationUtils.calculateAverageWeight(VALID_INT, ZERO_DOUBLE));
+
+        // Test with both count and total weight as zero
+        double result4 = CalculationUtils.calculateAverageWeight(ZERO_INT, ZERO_DOUBLE);
+        assertEquals(ZERO_DOUBLE, result4);
+
+        // Test with negative count
+        assertThrows(IllegalArgumentException.class,
+                () -> CalculationUtils.calculateAverageWeight(INVALID_INT, VALID_INT));
+
+        // Test with negative total weight
+        assertThrows(IllegalArgumentException.class,
+                () -> CalculationUtils.calculateAverageWeight(VALID_INT, INVALID_DOUBLE));
     }
 
     @Test
@@ -172,26 +154,44 @@ public class CalculationUtilsTest {
         double expectedAverageAmount1 = 2.0;
         double result1 = CalculationUtils.calculateAverageAmount(testCount1, testTimePeriod1);
         assertEquals(expectedAverageAmount1, result1);
-
+        
         // Test with count as zero
         assertThrows(IllegalStateException.class,
-                () -> CalculationUtils.calculateAverageAmount(ZERO_INT, VALID_INT));
-
+        () -> CalculationUtils.calculateAverageAmount(ZERO_INT, VALID_INT));
+        
         // Test with time period as zero
         assertThrows(IllegalStateException.class,
-                () -> CalculationUtils.calculateAverageAmount(VALID_INT, ZERO_INT));
-
+        () -> CalculationUtils.calculateAverageAmount(VALID_INT, ZERO_INT));
+        
         // Test with both count and time period as zero
         double result4 = CalculationUtils.calculateAverageAmount(ZERO_INT, ZERO_INT);
         assertEquals(ZERO_DOUBLE, result4);
-
+        
         // Test with negative count
         assertThrows(IllegalArgumentException.class,
-                () -> CalculationUtils.calculateAverageAmount(INVALID_INT, VALID_INT));
-
+        () -> CalculationUtils.calculateAverageAmount(INVALID_INT, VALID_INT));
+        
         // Test with negative time period
         assertThrows(IllegalArgumentException.class,
-                () -> CalculationUtils.calculateAverageAmount(VALID_INT, INVALID_INT));
+        () -> CalculationUtils.calculateAverageAmount(VALID_INT, INVALID_INT));
     }
 
+    @Test
+    public void testCalculateDailyCounts() throws Exception {
+        // Test with valid values
+        List<Data> testData1 = TestDataUtil.createTestData(2020, 1);
+        Map<String, Integer> result1 = CalculationUtils.calculateDailyCounts(testData1);
+        assertEquals(30, result1.size());
+        assertEquals(28, result1.get("07.28"));
+    
+        // Test with empty List
+        List<Data> testData2 = new ArrayList<>();
+        Map<String, Integer> result2 = CalculationUtils.calculateDailyCounts(testData2);
+        assertTrue(result2.isEmpty());
+    
+        // Test with null List
+        List<Data> testData3 = null;
+        assertThrows(NullPointerException.class, () -> CalculationUtils.calculateDailyCounts(testData3));
+    }
+    
 }
