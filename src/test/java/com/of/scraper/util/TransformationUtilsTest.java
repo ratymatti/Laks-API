@@ -11,7 +11,7 @@ public class TransformationUtilsTest {
 
     @Test
     public void testFormatDateToMMddString() throws Exception {
-        // Test with valid date
+        // Test with valid random date
         LocalDate date = LocalDate.of(2021, 04, 20);
         String formattedDate = TransformationUtils.formatDateToMMddString(date);
         assertEquals("04.20", formattedDate);
