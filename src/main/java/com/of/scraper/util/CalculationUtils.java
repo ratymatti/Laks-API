@@ -146,8 +146,4 @@ public class CalculationUtils {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(calculateAverageWeight(0, 10));
-    }
-
 }
