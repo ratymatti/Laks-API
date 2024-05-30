@@ -1,5 +1,6 @@
 package com.of.scraper.util;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -15,16 +16,16 @@ public class FilteringUtils {
      * Filters out the fishes that were caught out of season.
      * Currently by the salmon fishing season is from June 15th to August 31st.
      * Could be refactored to take the season as a parameter.
-     * 
-     * @param fishData
+     *
+     * @param fishData A list of fish data.
      * @return A list of fish data that were caught in season.
      */
-
     public static List<Fish> filterOutOffSeasonFishes(List<Fish> fishData) {
         return fishData.stream()
                 .filter(fish -> {
-                    int month = fish.getDate().getMonthValue();
-                    int day = fish.getDate().getDayOfMonth();
+                    LocalDate date = fish.getDate();
+                    int month = date.getMonthValue();
+                    int day = date.getDayOfMonth();
                     return (month > 6 || (month == 6 && day >= 15)) && (month < 8 || (month == 8 && day <= 31));
                 })
                 .collect(Collectors.toList());
