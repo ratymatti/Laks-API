@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.of.scraper.dto.AnglerStatsDTO;
 import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.WeekDTO;
+import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Fish;
 import com.of.scraper.repository.FishRepository;
 import com.of.scraper.testutils.TestDataUtil;
@@ -89,6 +90,18 @@ public class DataProcessingServiceTest {
         assertEquals("07.26", result.get(0).getEndDate());
         assertEquals(3220, result.get(0).getTotalWeight());
         assertEquals(10.0, result.get(0).getAverageWeight());
+    }
+
+    @Test
+    public void testGetStatistics() {
+        List<Fish> testData = TestDataUtil.createTestData(2020, 1);
+
+        List<YearDTO> result = dataProcessingService.getStatistics(testData);
+
+        assertEquals(2020, result.get(0).getYear());
+        assertEquals(465, result.get(0).getSalmonCount());
+        assertEquals(4650, result.get(0).getSalmonTotalWeight());
+        assertEquals(10.0, result.get(0).getSalmonAverageWeight());
     }
 
     @Test
