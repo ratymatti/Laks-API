@@ -37,6 +37,12 @@ public class FilteringUtils {
      * @return A list of the three best weeks.
      */
 
+    /**
+     * Returns the three best weeks from the list of weekly statistics.
+     *
+     * @param weeklyStats A list of WeekDTOs.
+     * @return A list of the three best weeks sorted in descending order by count.
+     */
     public static List<WeekDTO> getBestWeeks(List<WeekDTO> weeklyStats) {
         PriorityQueue<WeekDTO> queue = new PriorityQueue<>(Comparator.comparing(WeekDTO::getCount));
         for (WeekDTO week : weeklyStats) {
@@ -46,7 +52,7 @@ public class FilteringUtils {
             }
         }
         List<WeekDTO> result = new ArrayList<>(queue);
-        result.sort(Comparator.comparing(WeekDTO::getCount).reversed());
+        result.sort(Comparator.comparing(WeekDTO::getCount, Comparator.reverseOrder()));
         return result;
     }
 }
