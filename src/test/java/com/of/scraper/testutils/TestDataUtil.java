@@ -1,6 +1,7 @@
 package com.of.scraper.testutils;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +88,7 @@ public class TestDataUtil {
         for (int i = 0; i < numOfYears; i++) {
             for (int j = 1; j <= 30; j++) {
                 for (int k = 0; k < j; k++) {
-                    testData.add(new Fish("Laks", 10.0, LocalDate.of(year, 7, j)));
+                    testData.add(new Fish("Laks", 10.0, LocalDate.of(year, Month.JULY, j)));
                 }
             }
             year++;
