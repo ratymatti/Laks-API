@@ -76,11 +76,14 @@ public class CalculationUtils {
     }
 
     /**
-     * Calculates the average weight of fish caught in a week.
-     * 
-     * @param count       The total fish count for the week.
-     * @param totalWeight The total weight of fish caught in the week.
-     * @return The average weight of fish caught in the week as double.
+     * Calculates the average weight based on the count and total weight.
+     *
+     * @param count       the total count of items
+     * @param totalWeight the total weight of items
+     * @return the average weight, or 0.0 if count is 0
+     * @throws IllegalArgumentException if count or totalWeight is negative
+     * @throws IllegalStateException    if count is positive and totalWeight is 0,
+     *                                  or count is 0 and totalWeight is positive
      */
 
     public static double calculateAverageWeight(int count, double totalWeight) {
@@ -90,17 +93,22 @@ public class CalculationUtils {
         if ((count > 0 && totalWeight == 0) || (count == 0 && totalWeight > 0)) {
             throw new IllegalStateException("Invalid combination of count and total weight.");
         }
-        return (count > 0) ?  totalWeight / count : 0.0;
+        return (count > 0) ? totalWeight / count : 0.0;
     }
 
     /**
-     * Calculates the average from two integers. 
-     * 
-     * @param totalCount   int
-     * @param timePeriod int
-     * @return average value as double
+     * Calculates the average amount based on the total count and time period.
+     *
+     * @param totalCount the total count of items
+     * @param timePeriod the time period over which the average is calculated
+     * @return the average amount, or 0.0 if totalCount is 0
+     * @throws IllegalArgumentException if totalCount or timePeriod is negative
+     * @throws IllegalStateException    if totalCount is positive and timePeriod is
+     *                                  0,
+     *                                  or totalCount is 0 and timePeriod is
+     *                                  positive
      */
-
+    
     public static double calculateAverageAmount(int totalCount, int timePeriod) {
         if (totalCount < 0 || timePeriod < 0) {
             throw new IllegalArgumentException("Total count and total seasons must be greater than 0.");
@@ -138,7 +146,7 @@ public class CalculationUtils {
     /**
      * Calculates median amount from List of Integers. If length is 0 returns 0.0.
      * If length is even, returns average of two middle values. If length is odd,
-     * returns middle value. 
+     * returns middle value.
      * 
      * @param counts List of integers
      * @return median calculated from List counts as double
