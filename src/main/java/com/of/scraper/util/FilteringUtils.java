@@ -1,14 +1,16 @@
 package com.of.scraper.util;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.entity.Fish;
 
 public class FilteringUtils {
-    
+
     /**
      * Filters out the fishes that were caught out of season.
      * Currently by the salmon fishing season is from June 15th to August 31st.
@@ -36,7 +38,15 @@ public class FilteringUtils {
      */
 
     public static List<WeekDTO> getBestWeeks(List<WeekDTO> weeklyStats) {
-        weeklyStats.sort(Comparator.comparing(WeekDTO::getCount).reversed());
-        return weeklyStats.stream().limit(3).collect(Collectors.toList());
+        PriorityQueue<WeekDTO> queue = new PriorityQueue<>(Comparator.comparing(WeekDTO::getCount));
+        for (WeekDTO week : weeklyStats) {
+            queue.add(week);
+            if (queue.size() > 3) {
+                queue.poll();
+            }
+        }
+        List<WeekDTO> result = new ArrayList<>(queue);
+        result.sort(Comparator.comparing(WeekDTO::getCount).reversed());
+        return result;
     }
 }
