@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import com.of.scraper.dto.DayDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.entity.Fish;
+import com.of.scraper.util.CalculationUtils;
 
 /**
  * Class TestDataUtil
@@ -91,6 +93,37 @@ public class TestDataUtil {
             year++;
         }
         return testData;
+    }
+
+    public static List<Fish> createRandomTestData() {
+        List<Fish> testData = new ArrayList<>();
+
+        for (int i = 1; i <= 1000; i++) {
+            double randomWeight = createRandomWeight();
+            int randomDay = createRandomDay();
+            int randomYear = createRandomYear();
+            int randomMonth = createRandomMonth();
+            testData.add(new Fish("Laks", randomWeight, LocalDate.of(randomYear, randomMonth, randomDay)));
+        }
+        return testData;
+    }
+
+    private static int createRandomMonth() {
+        Random rand = new Random();
+        return rand.nextInt(8 - 6 + 1) + 6;
+    }
+
+    private static int createRandomYear() {
+        Random rand = new Random();
+        return rand.nextInt(2020 - 2015 + 1) + 2015;
+    }
+
+    private static int createRandomDay() {
+        return (int) Math.floor(Math.random() * 30) + 1;
+    }
+
+    private static double createRandomWeight() {
+        return CalculationUtils.roundToTwoDecimals(Math.random() * 20);
     }
 
 }
