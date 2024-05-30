@@ -18,36 +18,37 @@ public class FilteringUtilsTest {
     
     @Test
     public void testFilterOutOffSeasonFishes() {
-        // Create List<Data> with test data
+        // Test with valid data containing 5 entities with 2 off-season entities
         List<Fish> testData = TestDataUtil.createDataListWithOffSeasonFishes();
-        
-        // Call the method under test
         List<Fish> result = FilteringUtils.filterOutOffSeasonFishes(testData);
-
-        // Check that the method returns the correct number of elements
         assertEquals(3, result.size());
+
+        // Test with empty list
+        List<Fish> testData2 = new ArrayList<>();
+        List<Fish> result2 = FilteringUtils.filterOutOffSeasonFishes(testData2);
+        assertEquals(0, result2.size());
     }
 
     @Test
     public void testGetBestWeeks() {
-        // Create List<WeekDTO> with test data
+        // Test with 5 entities
         List<WeekDTO> testData1 = TestDataUtil.createWeekDTOListWithTestData(true);
-        List<WeekDTO> testData2 = TestDataUtil.createWeekDTOListWithTestData(false);
-        List<WeekDTO> testData3 = new ArrayList<>();
-        
-        // Call the method under test
         List<WeekDTO> result1 = FilteringUtils.getBestWeeks(testData1);
-        List<WeekDTO> result2 = FilteringUtils.getBestWeeks(testData2);
-        List<WeekDTO> result3 = FilteringUtils.getBestWeeks(testData3);
-
-        // Check that the method returns the correct number of elements
         assertEquals(3, result1.size());
         assertEquals(50, result1.get(0).getCount());
         assertEquals(40, result1.get(1).getCount());
         assertEquals(30, result1.get(2).getCount());
+        
+        // Test with 2 entities
+        List<WeekDTO> testData2 = TestDataUtil.createWeekDTOListWithTestData(false);
+        List<WeekDTO> result2 = FilteringUtils.getBestWeeks(testData2);
         assertEquals(2, result2.size());
         assertEquals(50, result2.get(0).getCount());
         assertEquals(40, result2.get(1).getCount());
+
+        // Test with empty list
+        List<WeekDTO> testData3 = new ArrayList<>();
+        List<WeekDTO> result3 = FilteringUtils.getBestWeeks(testData3);
         assertEquals(0, result3.size());
     }
 }
