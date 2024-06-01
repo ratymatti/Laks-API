@@ -115,6 +115,7 @@ public class FishDataProcessingServiceTest {
         assertEquals(9300, result.getTotalSalmonWeight());
         assertEquals(10.0, result.getAverageSalmonWeight());
         assertEquals(0, result.getTotalSeatroutCount());
+        assertEquals(0.0, result.getAverageSeatroutWeight());
     }
  
     @Test
