@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.of.scraper.dto.AnglerStatsDTO;
 import com.of.scraper.dto.AverageAndMedianDTO;
+import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Fish;
@@ -22,7 +23,7 @@ import com.of.scraper.repository.FishRepository;
 import com.of.scraper.testutils.TestDataUtil;
 
 @ExtendWith(MockitoExtension.class)
-public class DataProcessingServiceTest {
+public class FishDataProcessingServiceTest {
 
     @Mock
     private FishRepository fishRepository;
@@ -104,6 +105,18 @@ public class DataProcessingServiceTest {
         assertEquals(10.0, result.get(0).getSalmonAverageWeight());
     }
 
+    @Test 
+    public void testGetAlltimeStatistics() {
+        List<Fish> testData = TestDataUtil.createTestData(2020, 2);
+
+        StatisticsDTO result = dataProcessingService.getAlltimeStatistics(testData);
+
+        assertEquals(930, result.getTotalSalmonCount());
+        assertEquals(9300, result.getTotalSalmonWeight());
+        assertEquals(10.0, result.getAverageSalmonWeight());
+        assertEquals(0, result.getTotalSeatroutCount());
+    }
+ 
     @Test
     public void testGetAverageAndMedianOfFishesPerDay() {
         // Arrange
@@ -120,6 +133,10 @@ public class DataProcessingServiceTest {
         assertEquals(15.5, result1.get(2020).getAverage());
         assertEquals(16, result2.get(2020).getMedian());
         assertEquals(16, result2.get(2020).getAverage());
+    }
+
+    public void main(String[] args) {
+        testGetAlltimeStatistics();
     }
 
 }

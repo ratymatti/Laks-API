@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DataServiceImplTest {
+public class FishDataServiceImplTest {
 
     @Mock
     private FishRepository fishRepository;
