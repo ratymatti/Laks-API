@@ -24,6 +24,7 @@ public class GroupingUtilsTest {
         Map<String, List<Fish>> result = GroupingUtils.groupByDayAndMonth(testData);
 
         // Check that the method returns the correct number of elements
+        assertEquals(78, result.size());
         assertEquals(1, result.get("07.01").size());
         assertEquals(2, result.get("07.02").size());
         assertEquals(30, result.get("07.30").size());
@@ -38,6 +39,7 @@ public class GroupingUtilsTest {
         Map<Integer, List<Fish>> result = GroupingUtils.groupByYear(testData);
 
         // Check that the method returns the correct number of elements
+        assertEquals(2, result.size());
         assertEquals(465, result.get(2020).size());
         assertEquals(465, result.get(2021).size());
     }
