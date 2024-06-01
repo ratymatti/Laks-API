@@ -135,8 +135,4 @@ public class FishDataProcessingServiceTest {
         assertEquals(16, result2.get(2020).getAverage());
     }
 
-    public void main(String[] args) {
-        testGetAlltimeStatistics();
-    }
-
 }
