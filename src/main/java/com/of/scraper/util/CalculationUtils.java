@@ -113,8 +113,8 @@ public class CalculationUtils {
         if (totalCount < 0 || timePeriod < 0) {
             throw new IllegalArgumentException("Total count and total seasons must be greater than 0.");
         }
-        if ((totalCount > 0 && timePeriod == 0) || (totalCount == 0 && timePeriod > 0)) {
-            throw new IllegalStateException("Invalid combination of count and total weight.");
+        if (totalCount > 0 && timePeriod == 0) {
+            throw new IllegalStateException("Invalid combination of count and time period.");
         }
         return (totalCount > 0) ? (double) totalCount / timePeriod : 0.0;
     }

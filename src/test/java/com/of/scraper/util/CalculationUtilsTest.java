@@ -154,10 +154,6 @@ public class CalculationUtilsTest {
         double result1 = CalculationUtils.calculateAverageAmount(testCount1, testTimePeriod1);
         assertEquals(expectedAverageAmount1, result1);
 
-        // Test with count as zero
-        assertThrows(IllegalStateException.class,
-                () -> CalculationUtils.calculateAverageAmount(ZERO_INT, VALID_INT));
-
         // Test with time period as zero
         assertThrows(IllegalStateException.class,
                 () -> CalculationUtils.calculateAverageAmount(VALID_INT, ZERO_INT));
