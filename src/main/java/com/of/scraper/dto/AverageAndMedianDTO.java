@@ -5,6 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * AverageAndMedianDTO is a Data Transfer Object (DTO) class that represents the
+ * average and median of the fishing data.
+ * 
+ * The class has the following fields:
+ * 
+ * @average: double - the average of the fishing data.
+ * @median: double - the median of the fishing data.
+ */
+
 @Embeddable
 @AllArgsConstructor
 @Getter
