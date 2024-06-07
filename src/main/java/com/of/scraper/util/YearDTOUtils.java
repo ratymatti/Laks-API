@@ -71,4 +71,23 @@ public class YearDTOUtils {
                 .calculateAverageWeight(
                         yearDTO.getSeatroutCount(), yearDTO.getSeatroutTotalWeight()));
     }
+
+    /**
+     * Rounds the total and average weights of salmons and seatrouts in a YearDTO
+     * to one decimal place.
+     * 
+     * @param yearDTO The YearDTO to be rounded.
+     * @return The YearDTO with rounded values.
+     */
+
+     public static YearDTO roundYearDTOValues(YearDTO yearDTO) {
+        if (yearDTO == null) {
+            throw new IllegalArgumentException("YearDTO must not be null.");
+        }
+        yearDTO.setSalmonTotalWeight(CalculationUtils.roundToTwoDecimals(yearDTO.getSalmonTotalWeight()));
+        yearDTO.setSalmonAverageWeight(CalculationUtils.roundToTwoDecimals(yearDTO.getSalmonAverageWeight()));
+        yearDTO.setSeatroutTotalWeight(CalculationUtils.roundToTwoDecimals(yearDTO.getSeatroutTotalWeight()));
+        yearDTO.setSeatroutAverageWeight(CalculationUtils.roundToTwoDecimals(yearDTO.getSeatroutAverageWeight()));
+        return yearDTO;
+    }
 }

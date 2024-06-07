@@ -5,29 +5,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Fish;
 
 public class CalculationUtils {
-
-    /**
-     * Rounds the total and average weights of salmons and seatrouts in a YearDTO
-     * to one decimal place.
-     * 
-     * @param yearDTO The YearDTO to be rounded.
-     * @return The YearDTO with rounded values.
-     */
-
-    public static YearDTO roundYearDTOValues(YearDTO yearDTO) {
-        if (yearDTO == null) {
-            throw new IllegalArgumentException("YearDTO must not be null.");
-        }
-        yearDTO.setSalmonTotalWeight(roundToTwoDecimals(yearDTO.getSalmonTotalWeight()));
-        yearDTO.setSalmonAverageWeight(roundToTwoDecimals(yearDTO.getSalmonAverageWeight()));
-        yearDTO.setSeatroutTotalWeight(roundToTwoDecimals(yearDTO.getSeatroutTotalWeight()));
-        yearDTO.setSeatroutAverageWeight(roundToTwoDecimals(yearDTO.getSeatroutAverageWeight()));
-        return yearDTO;
-    }
 
     /**
      * Rounds a double value to two decimal places.

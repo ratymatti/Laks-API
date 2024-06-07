@@ -133,7 +133,7 @@ public class FishDataProcessingService {
         for (List<Fish> year : fishesByYear.values()) {
             YearDTO yearDTO = YearDTOUtils.transformToYearDTO(year);
 
-            result.add(CalculationUtils.roundYearDTOValues(yearDTO));
+            result.add(YearDTOUtils.roundYearDTOValues(yearDTO));
         }
 
         return result;

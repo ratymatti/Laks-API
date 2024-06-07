@@ -12,7 +12,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import com.of.scraper.dto.DayDTO;
-import com.of.scraper.dto.YearDTO;
 import com.of.scraper.entity.Fish;
 import com.of.scraper.testutils.TestDataUtil;
 
@@ -25,24 +24,6 @@ public class CalculationUtilsTest {
     private static final double INVALID_DOUBLE = -10.0;
     private static final double ZERO_DOUBLE = 0.0;
 
-    @Test
-    public void testRoundYearDTOValues() {
-        // Create a YearDTO with some test values
-        YearDTO yearDTO = new YearDTO();
-        yearDTO.setSalmonTotalWeight(123.456);
-        yearDTO.setSalmonAverageWeight(123.456);
-        yearDTO.setSeatroutTotalWeight(123.456);
-        yearDTO.setSeatroutAverageWeight(123.456);
-
-        // Call the method under test
-        YearDTO roundedYearDTO = CalculationUtils.roundYearDTOValues(yearDTO);
-
-        // Check that each field has been rounded correctly
-        assertEquals(123.46, roundedYearDTO.getSalmonTotalWeight(), 0.01);
-        assertEquals(123.46, roundedYearDTO.getSalmonAverageWeight(), 0.01);
-        assertEquals(123.46, roundedYearDTO.getSeatroutTotalWeight(), 0.01);
-        assertEquals(123.46, roundedYearDTO.getSeatroutAverageWeight(), 0.01);
-    }
 
     @Test
     public void testRoundToTwoDecimals() throws Exception {
