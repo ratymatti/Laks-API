@@ -14,7 +14,6 @@ import com.of.scraper.dto.AverageAndMedianDTO;
 import com.of.scraper.dto.StatisticsDTO;
 import com.of.scraper.dto.WeekDTO;
 import com.of.scraper.dto.YearDTO;
-import com.of.scraper.entity.Fish;
 import com.of.scraper.service.FishDataService;
 import com.of.scraper.service.ScraperService;
 
@@ -27,17 +26,6 @@ public class FishDataController {
 
     FishDataService fishDataService;
     ScraperService scraperService;
-
-    @GetMapping("/scrapeAndSave")
-    public void scrapeAndSave() {
-        scraperService.scrapeData();
-    }
-
-    @GetMapping("/getAll")
-    public ResponseEntity<List<Fish>> getAll() {
-        List<Fish> data = fishDataService.findAll();
-        return new ResponseEntity<>(data, HttpStatus.OK);
-    }
 
     @GetMapping("/getBestWeeks/{species}")
     public ResponseEntity<Map<Integer, List<WeekDTO>>> getBestWeeksYearly(@PathVariable String species) {
