@@ -188,19 +188,22 @@ public class FishDataProcessingService {
         for (AnglerStatsDTO stats : anglerStatsMap.values()) {
             anglerStatsList.add(stats);
         }
-        
+
         return anglerStatsList.stream()
-            .sorted(Comparator.comparing(AnglerStatsDTO::getCount).reversed())
-            .collect(Collectors.toList());
+                .sorted(Comparator.comparing(AnglerStatsDTO::getCount).reversed())
+                .collect(Collectors.toList());
     }
 
     private AnglerStatsDTO updateAnglerStats(AnglerStatsDTO anglerStats, Fish fish) {
         if (anglerStats.getName() == null) {
             anglerStats.setName(fish.getName());
         }
-        anglerStats.setCount(anglerStats.getCount() + 1);
+        int currentCount = anglerStats.getCount();
+        anglerStats.setCount(currentCount + 1);
         anglerStats.setTotalWeight(anglerStats.getTotalWeight() + fish.getWeight());
-        anglerStats.setAverageWeight(CalculationUtils.roundToTwoDecimals(CalculationUtils.calculateAverageWeight(anglerStats.getCount(), anglerStats.getTotalWeight())));
+        anglerStats.setAverageWeight(CalculationUtils
+                .roundToTwoDecimals(CalculationUtils
+                        .calculateAverageWeight(++currentCount, anglerStats.getTotalWeight())));
         return anglerStats;
     }
 }
