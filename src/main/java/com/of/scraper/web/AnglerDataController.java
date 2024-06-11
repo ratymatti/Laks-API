@@ -33,4 +33,9 @@ public class AnglerDataController {
         AnglerDTO angler = fishDataService.findByNameAndSpecies(name, species);
         return new ResponseEntity<>(angler, HttpStatus.OK);
     }
+
+    @GetMapping("/getAnglerData/{species}")
+    public void getAnglerData(@PathVariable String species) {
+        fishDataService.getAnglerData(species);
+    }
 }
