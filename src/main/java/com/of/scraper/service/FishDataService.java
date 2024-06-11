@@ -22,4 +22,5 @@ public interface FishDataService {
     List<YearDTO> getAnnualStatistics();
     StatisticsDTO getAlltimeStatistics();
     Map<Integer, AverageAndMedianDTO> getAverageAndMedian();
+    void getAnglerData(String species);
 }

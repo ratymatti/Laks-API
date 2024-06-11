@@ -181,4 +181,11 @@ public class FishDataServiceImpl implements FishDataService {
         return fishDataProcessingService.getAverageAndMedianOfFishesPerDay(fishes);
     }
 
+    @Override
+    public void getAnglerData(String species) {
+        List<Fish> fishes = fishRepository.findBySpecies(species, Sort.by("date"));
+        List<AnglerStatsDTO> stats = fishDataProcessingService.getAnglerStatistics(fishes);
+        System.out.println(stats);
+    }
+
 }
