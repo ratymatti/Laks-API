@@ -1,9 +1,12 @@
 package com.of.scraper.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -165,5 +168,33 @@ public class FishDataProcessingService {
                         .filterOutOffSeasonFishes(fishData));
 
         return AverageAndMedianDTOUtils.transformToAverageAndMedianDTOMap(fishesByYear);
+    }
+
+    public List<AnglerStatsDTO> getAnglerStatistics(List<Fish> fishData) {
+        Map<String, AnglerStatsDTO> anglerStatsMap = new HashMap<>();
+
+        for (Fish fish : fishData) {
+            if (fish.getName().equals("N/A")) {
+                continue;
+            }
+            if (!anglerStatsMap.containsKey(fish.getName())) {
+                anglerStatsMap.put(fish.getName(), new AnglerStatsDTO());
+            }
+            AnglerStatsDTO anglerStats = anglerStatsMap.get(fish.getName());
+            anglerStats.setName(fish.getName());
+            anglerStats.setCount(anglerStats.getCount() + 1);
+            anglerStats.setTotalWeight(anglerStats.getTotalWeight() + fish.getWeight());
+            anglerStats.setAverageWeight(CalculationUtils.roundToTwoDecimals(CalculationUtils.calculateAverageWeight(anglerStats.getCount(), anglerStats.getTotalWeight())));
+            anglerStatsMap.put(fish.getName(), anglerStats);
+        }
+        List<AnglerStatsDTO> anglerStatsList = new ArrayList<>();
+
+        for (AnglerStatsDTO stats : anglerStatsMap.values()) {
+            anglerStatsList.add(stats);
+        }
+        
+        return anglerStatsList.stream()
+            .sorted(Comparator.comparing(AnglerStatsDTO::getCount).reversed())
+            .collect(Collectors.toList());
     }
 }
