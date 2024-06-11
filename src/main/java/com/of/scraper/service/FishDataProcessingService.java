@@ -180,12 +180,8 @@ public class FishDataProcessingService {
             if (!anglerStatsMap.containsKey(fish.getName())) {
                 anglerStatsMap.put(fish.getName(), new AnglerStatsDTO());
             }
-            AnglerStatsDTO anglerStats = anglerStatsMap.get(fish.getName());
-            anglerStats.setName(fish.getName());
-            anglerStats.setCount(anglerStats.getCount() + 1);
-            anglerStats.setTotalWeight(anglerStats.getTotalWeight() + fish.getWeight());
-            anglerStats.setAverageWeight(CalculationUtils.roundToTwoDecimals(CalculationUtils.calculateAverageWeight(anglerStats.getCount(), anglerStats.getTotalWeight())));
-            anglerStatsMap.put(fish.getName(), anglerStats);
+            AnglerStatsDTO updatedStats = updateAnglerStats(anglerStatsMap.get(fish.getName()), fish);
+            anglerStatsMap.put(fish.getName(), updatedStats);
         }
         List<AnglerStatsDTO> anglerStatsList = new ArrayList<>();
 
@@ -196,5 +192,15 @@ public class FishDataProcessingService {
         return anglerStatsList.stream()
             .sorted(Comparator.comparing(AnglerStatsDTO::getCount).reversed())
             .collect(Collectors.toList());
+    }
+
+    private AnglerStatsDTO updateAnglerStats(AnglerStatsDTO anglerStats, Fish fish) {
+        if (anglerStats.getName() == null) {
+            anglerStats.setName(fish.getName());
+        }
+        anglerStats.setCount(anglerStats.getCount() + 1);
+        anglerStats.setTotalWeight(anglerStats.getTotalWeight() + fish.getWeight());
+        anglerStats.setAverageWeight(CalculationUtils.roundToTwoDecimals(CalculationUtils.calculateAverageWeight(anglerStats.getCount(), anglerStats.getTotalWeight())));
+        return anglerStats;
     }
 }
