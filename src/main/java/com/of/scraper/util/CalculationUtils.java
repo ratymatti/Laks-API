@@ -1,5 +1,7 @@
 package com.of.scraper.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,9 +23,9 @@ public class CalculationUtils {
             throw new IllegalArgumentException("Value cannot be negative");
         }
 
-        final int NUM_OF_DECIMALS = 2;
-        return Math.round(
-                value * Math.pow(10, NUM_OF_DECIMALS)) / Math.pow(10, NUM_OF_DECIMALS);
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     /**
