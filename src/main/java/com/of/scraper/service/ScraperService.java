@@ -29,7 +29,7 @@ public class ScraperService {
 
     /**
      * Scrapes data from scanatura.no catch reports page and stores it in a list
-     * of Data entities (each representing one fish that is submitted to page).
+     * of Fish entities (each representing one fish that is submitted to page).
      * 
      * The function navigates to a webpage, selects specific options from dropdown
      * menus,
